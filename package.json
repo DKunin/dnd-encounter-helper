@@ -1,0 +1,22 @@
+{
+  "name": "dnd-encounter-helper",
+  "version": "0.0.1",
+  "private": false,
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dkunin/dnd-encounter-helper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dkunin/dnd-encounter-helper/issues"
+  },
+  "scripts": {
+    "test": "echo test",
+    "start": "node ./",
+    "dev": "node ./",
+    "build": "NODE_ENV=production node ./"
+  },
+  "homepage": "https://github.com/dkunin/dnd-encounter-helper",
+  "keywords": [],
+  "license": "MIT"
+}
