@@ -19,7 +19,7 @@
   "homepage": "https://github.com/dkunin/dnd-encounter-helper",
   "keywords": [],
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "gh-pages": "1.1.0"
   }
 }
