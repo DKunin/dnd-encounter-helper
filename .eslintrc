@@ -139,6 +139,7 @@
     },
     "globals": {
         "Vue": true,
+        "cryptofoo": true,
         "VueRouter": true,
         "VueResource": true,
         "Vuex": true
