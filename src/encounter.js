@@ -14,8 +14,12 @@ const template = `
                 </div>
               </div>
             </article>
+            <a v-if="false" :href="generateFile()" download="encounter.json">
+                Download as JSON
+            </a>
         </main>
     `;
+
 
 const encounter = {
     computed: {
@@ -25,6 +29,16 @@ const encounter = {
     },
     mounted() {
         console.log(this.$store.state.encounter);
+    },
+    methods: {
+        generateFile() {
+            // var txtFile = "encounter.json";
+            // var file = new File(txtFile);
+            // var str = JSON.stringify(this.$store.state.encounter);
+            // var dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(str);
+            // return dataUri;
+            return '';
+        }
     },
     template
 };

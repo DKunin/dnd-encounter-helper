@@ -12,7 +12,6 @@ const routes = [
     { path: '/spells', component: spells },
     { path: '/weapons', component: weapons },
     { path: '/encounter', component: encounter }
-    // { path: '/settings', component: settings, name: 'settings' }
 ];
 
 const router = new VueRouter({ routes });
