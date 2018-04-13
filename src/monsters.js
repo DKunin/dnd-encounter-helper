@@ -31,7 +31,7 @@ const template = `
                 </div>
               </div>
               <div class="media-right">
-                <a class="button">
+                <a class="button" @click="addMonster(monster)">
                   <span class="icon is-small">
                     <i class="fas fa-plus-square"></i>
                   </span>
@@ -64,7 +64,8 @@ const monsters = {
     },
     template,
     methods: {
-        saveSettings: function(event) {
+        addMonster(monster) {
+          this.$store.commit('addToEncounter', monster);
             // this.$router.push('/');
         }
     },
