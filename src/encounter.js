@@ -22,26 +22,24 @@ const template = `
                     </a>
                 </div>
             </div>
-
-            <a v-if="false" :href="generateFile()" download="encounter.json">
-                Download as JSON
+            <a :href="generateFile()" download="encounter.json">
+                Download encounter
             </a>
-            <details>
-                <summary>json</summary>
-                {{ JSON.stringify(encounter) }}
-            </details>
-            <nav class="level">
-              <div class="level-left">
-                <div class="level-item">
-                  <div class="field has-addons">
-                    <p class="control">
-                      <input v-model="tempEncounter" class="input" type="text">
-                    </p>
-                  </div>
-                </div>
-                <a class="button" @click="importEncounter">Import</a>
-              </div>
-            </nav>
+
+            <div class="file">
+              <label class="file-label">
+                <input @change="importFile" class="file-input" type="file">
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Upload encounter
+                  </span>
+                </span>
+              </label>
+            </div>
+            <h2 class="is-size-5">Saved Encounters</h2>
             <div v-for="encoun in savedEncounters">
                 <a @click="loadEncounter(encoun.name)">{{ encoun.name }}</a>
             </div>
@@ -61,13 +59,19 @@ const encounter = {
         console.log(this.$store.state.encounter);
     },
     methods: {
+        importFile(event) {
+            const file = event.target.files[0];
+            const fr = new FileReader();
+            fr.onload = event => {
+                this.$store.commit('importEncounter', event.target.result);
+            };
+            fr.readAsText(file);
+        },
         generateFile() {
-            // var txtFile = "encounter.json";
-            // var file = new File(txtFile);
-            // var str = JSON.stringify(this.$store.state.encounter);
-            // var dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(str);
-            // return dataUri;
-            return '';
+            var json = JSON.stringify(this.$store.state.encounter);
+            var blob = new Blob([json], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            return url;
         },
         saveEncounter() {
             if (this.name) {

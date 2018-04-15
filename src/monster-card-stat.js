@@ -55,11 +55,16 @@ const template = `
             </div>
 
             <ul>
-                <li v-if="monster.additional_weapon"> 
-                    <span>{{ monster.additional_weapon.name }}</span>
-                    <span>{{ monster.additional_weapon.damage }}</span>
-                    <span>{{ monster.additional_weapon.properties }}</span>
+                <b v-if="monster.additional_weapon">Additional weapon</b>
+                <li v-for="additional_weapon in monster.additional_weapon">
+                    <span>{{ additional_weapon.name }}</span> <span>{{ additional_weapon.damage }}</span>
+                    <span>{{ additional_weapon.properties ? additional_weapon.properties.join(', ') : additional_weapon.properties }}</span>
                 </li>
+                <b v-if="monster.additional_spells">Additional spells</b>
+                <li v-for="additional_spells in monster.additional_spells">
+                    <span>{{ additional_spells.name }}</span>
+                </li>
+
                 <li v-for="action in monster.actions" :title="action.desc">
                     {{ action.name }},
                     hit: +{{ action.attack_bonus}}
@@ -82,6 +87,14 @@ const template = `
                     <span v-if="monster.condition_immunities">condition_immunities: {{ monster.condition_immunities }}</span>
                     <span v-if="monster.languages">languages: {{ monster.languages }}</span>
                 </li>
+               <li class="monster-card-additional-info" v-for="action in monster.special_abilities" :title="action.desc">
+                    {{ action.name }},
+                    hit: +{{ action.attack_bonus}}
+                </li>
+                <li class="monster-card-additional-info" v-for="action in monster.legendary_actions" :title="action.desc">
+                    {{ action.name }},
+                    hit: +{{ action.attack_bonus}}
+                </li>
                 <li>
                     XP: {{ monster.challenge_rating * 100 }}
                 </li>
@@ -90,12 +103,19 @@ const template = `
             <div class="field is-horizontal">
                 <textarea class="textarea" placeholder="notes"></textarea>
             </div>
-            <label for="">Additional weapon</label>
-            <div class="select">
-                <select v-model="monster.additional_weapon">
-                    <option v-for="weapon in weapons" :value="weapon" >{{ weapon.name }}</option>
-                </select>
-            </div>
+            <details>
+                <summary>Additions</summary>
+                <div class="select is-multiple">
+                    <select v-model="monster.additional_weapon" multiple size="4">
+                        <option v-for="weapon in weapons" :value="weapon" >{{ weapon.name }}</option>
+                    </select>
+                </div>
+                <div class="select is-multiple">
+                    <select v-model="monster.additional_spells" multiple size="4">
+                        <option v-for="spell in spells" :value="spell" >{{ spell.name }}</option>
+                    </select>
+                </div>
+            </details>
         </div>
     `;
 
@@ -109,6 +129,9 @@ const monsterShortStat = {
     computed: {
         weapons() {
             return this.$store.state.weaponsData;
+        },
+        spells() {
+            return this.$store.state.spellsData;
         }
     },
     methods: {

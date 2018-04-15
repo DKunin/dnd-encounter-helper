@@ -13,6 +13,7 @@ const template = `
                     <p class="control">
                       <input v-model="filter" class="input" type="text">
                     </p>
+                    <a class="button" @click="search">search</a>
                   </div>
                 </div>
               </div>
@@ -47,12 +48,13 @@ const template = `
 const monsters = {
     data() {
         return {
-            filter: null
+            filter: null,
+            setFilter: null
         };
     },
     computed: {
         monsters() {
-            const filter = this.filter;
+            const filter = this.setFilter;
             if (!filter) {
                 return this.$store.state.monstersData;
             }
@@ -69,6 +71,9 @@ const monsters = {
     methods: {
         addMonster(monster) {
           this.$store.commit('addToEncounter', monster);
+        },
+        search() {
+          this.setFilter = this.filter;
         }
     },
     mounted() {}
