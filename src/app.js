@@ -124,8 +124,8 @@ const template = `
             <li><router-link to="/monsters">Monsters</router-link></li>
             <li><router-link to="/spells">Spells</router-link></li>
             <li><router-link to="/weapons">Weapons</router-link></li>
-            <li><router-link to="/encounter">Encounters</router-link></li>
-            <li><router-link to="/party">Party</router-link></li>
+            <li><router-link to="/encounter">Encounters <span v-if="$store.state.encounter.length">({{ $store.state.encounter.length }})</span></router-link></li>
+            <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
             <li><router-link to="/misc">Misc</router-link></li>
           </ul>
         </div>
