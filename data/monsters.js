@@ -3203,6 +3203,31 @@ const monsters = [
         ]
     },
     {
+        name: 'Generic Monster',
+        size: '',
+        type: '',
+        subtype: 'any race',
+        alignment: 'any',
+        armor_class: 11,
+        hit_points: 10,
+        hit_dice: '2d8',
+        speed: '30 ft.',
+        strength: 10,
+        dexterity: 10,
+        constitution: 10,
+        intelligence: 10,
+        wisdom: 10,
+        charisma: 10,
+        damage_vulnerabilities: '',
+        damage_resistances: '',
+        damage_immunities: '',
+        condition_immunities: '',
+        senses: 'passive Perception 10',
+        languages: 'any one language (usually Common)',
+        challenge_rating: 0.25,
+        actions: []
+    },
+    {
         name: 'Barbed Devil',
         size: 'Medium',
         type: 'fiend',
@@ -11721,79 +11746,6 @@ const monsters = [
                 name: 'Bite',
                 desc:
                     'Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit: 1 piercing damage.',
-                attack_bonus: 0,
-                damage_bonus: 1
-            }
-        ]
-    },
-    {
-        name: 'Twig Blight',
-        size: 'small',
-        type: 'plant',
-        subtype: '',
-        alignment: 'neutral evil',
-        armor_class: 13,
-        hit_points: 4,
-        hit_dice: '1d6+1',
-        speed: '20 ft.',
-        strength: 6,
-        dexterity: 13,
-        constitution: 12,
-        intelligence: 4,
-        wisdom: 8,
-        charisma: 3,
-        damage_vulnerabilities: 'fire',
-        damage_resistances: '',
-        damage_immunities: '',
-        condition_immunities: 'blinded, deafened',
-        senses: 'blindsight 60ft. (blind beyond this radius),passive Perception 9, stealth + 3',
-        languages: 'common, cannot speak',
-        challenge_rating: 0.25,
-        actions: [
-            {
-                name: 'Claws',
-                desc: 'Melee Weapon Attack: +3 to hit, reach 5 ft. , one target. Hit:3 (1d4 + 1) piercing damage.',
-                attack_bonus: 3,
-                damage_dice: '1d4',
-                damage_bonus: 1
-            }
-        ]
-    },
-    {
-        name: 'Vine Blight',
-        size: 'medium',
-        type: 'plant',
-        subtype: '',
-        alignment: 'neutral evil',
-        armor_class: 12,
-        hit_points: 26,
-        hit_dice: '2d8+8',
-        speed: '10 ft.',
-        strength: 15,
-        dexterity: 8,
-        constitution: 14,
-        intelligence: 5,
-        wisdom: 10,
-        charisma: 3,
-        damage_vulnerabilities: '',
-        damage_resistances: '',
-        damage_immunities: '',
-        condition_immunities: 'blinded, deafened',
-        senses: 'blindsight 60ft. (blind beyond this radius),passive Perception 10, stealth + 1',
-        languages: 'common, cannot speak',
-        challenge_rating: 0.25,
-        actions: [
-            {
-                name: 'Constrict',
-                desc:
-                    'Melee Weapon Attack:+4 to hit, reach 10ft., one target. Hit: 9 (2d6 + 2) bludgeoning damage, and a Large or smaller target is grappled (escape DC 12). Until this grapple ends, the target is restrained, and the blight can\'t constrict another target.',
-                attack_bonus: 4,
-                damage_dice: '2d6',
-                damage_bonus: 2
-            }, {
-                name: 'Entangling Plants',
-                desc:
-                    '(Recharge 5-6). Grasping roots and vines sprout in a 15-foot radius centered on the blight, withering away after 1 minute. For the duration, that area is difficult terrain for nonplant creatures. In addition, each creature ofthe blight\'s choice in that area when the plants appear must succeed on a DC 12 Strength saving throw or become restrained . A creature can use its action to make a DC 12 Strength check, freeing itself or another entangled creature within reach on a success.',
                 attack_bonus: 0,
                 damage_bonus: 1
             }

@@ -13,6 +13,7 @@ const template = `
                     <p class="control">
                       <input v-model="filter" class="input" type="text">
                     </p>
+                    <a class="button" @click="search">search</a>
                   </div>
                 </div>
               </div>
@@ -43,12 +44,13 @@ const template = `
 const weapons = {
     data() {
         return {
-            filter: null
+            filter: null,
+            setFilter: null
         };
     },
     computed: {
         weapons() {
-            const filter = this.filter;
+            const filter = this.setFilter;
             if (!filter) {
                 return this.$store.state.weaponsData;
             }
@@ -61,8 +63,8 @@ const weapons = {
     },
     template,
     methods: {
-        saveSettings: function(event) {
-            // this.$router.push('/');
+        search: function() {
+            this.setFilter = this.filter
         }
     },
     mounted() {}

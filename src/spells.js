@@ -13,6 +13,7 @@ const template = `
                     <p class="control">
                       <input v-model="filter" class="input" type="text">
                     </p>
+                    <a class="button" @click="search">search</a>
                   </div>
                 </div>
               </div>
@@ -51,12 +52,13 @@ const template = `
 const spells = {
     data() {
         return {
-            filter: null
+            filter: null,
+            setFilter: null
         };
     },
     computed: {
         spells() {
-            const filter = this.filter;
+            const filter = this.setFilter;
             if (!filter) {
                 return this.$store.state.spellsData;
             }
@@ -69,8 +71,8 @@ const spells = {
     },
     template,
     methods: {
-        saveSettings: function(event) {
-            // this.$router.push('/');
+        search: function() {
+            this.setFilter = this.filter
         }
     },
     mounted() {}
