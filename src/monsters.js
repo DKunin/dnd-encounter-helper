@@ -26,7 +26,10 @@ const template = `
               <div class="media-content">
                 <div class="content">
                     <p>
-                    <strong>{{ monster.name }} </strong> <small>{{ monster.size }}</small> <small>{{ monster.type }}</small>
+                      <strong>{{ monster.name }} </strong> <small>{{ monster.size }}</small> <small>{{ monster.type }}</small>
+                    </p>
+                    <p>
+                      <monster-short-stat :monster="monster" />
                     </p>
                 </div>
               </div>
@@ -66,7 +69,6 @@ const monsters = {
     methods: {
         addMonster(monster) {
           this.$store.commit('addToEncounter', monster);
-            // this.$router.push('/');
         }
     },
     mounted() {}

@@ -4276,6 +4276,66 @@ const monsters = [
         ]
     },
     {
+        name: 'Bullywug',
+        size: 'medium',
+        type: 'humanoid',
+        subtype: '',
+        alignment: 'neutral evil',
+        armor_class: 15,
+        hit_points: 11,
+        hit_dice: '2d8+2',
+        speed: '20ft., swim 40ft.',
+        strength: 12,
+        dexterity: 12,
+        constitution: 13,
+        intelligence: 7,
+        wisdom: 10,
+        charisma: 7,
+        perception: 6,
+        damage_vulnerabilities: '',
+        damage_resistances: '',
+        damage_immunities: '',
+        condition_immunities: '',
+        senses: 'darkvision 60 ft., tremorsense 60 ft., passive Perception 16',
+        languages: '',
+        challenge_rating: 0.25,
+        special_abilities: [
+            {
+                name: 'Amphibious',
+                desc: 'The bullywug can breathe air and water.',
+                attack_bonus: 0
+            },
+            {
+                name: 'Swamp Camouflage',
+                desc: 'The bullywug has advantage on Dexterity (Stealth) checks made to hide in swampy terrain.',
+                attack_bonus: 0
+            },
+            {
+                name: 'Standing Leap',
+                desc: 'The bullywug\'s long jump is up to 20 feet and its high jump is up to 10feet,with or without a running start.',
+                attack_bonus: 0
+            }
+        ],
+        actions: [
+            {
+                name: 'Bite',
+                desc:
+                    'Melee Weapon Attack:+3 to hit, reach 5 ft., one target. Hit: 3 (1d4 + 1) bludgeoning damage.',
+                attack_bonus: 3,
+                damage_dice: '1d4',
+                damage_bonus: 1
+            },
+            {
+                name: 'Spear',
+                desc:
+                    "Melee or Ranged Weapon Attack: +3 to hit, reach 5 ft. or range 20f-60ft.,onetarget. Hit:4(1d6+1) piercing damage,or 5 (1d8 + 1) piercing damage if used with two hands to make a melee attack.",
+                attack_bonus: 3,
+                damage_dice: '1d6',
+                damage_bonus: 1
+            }
+        ]
+    },
+    {
         name: 'Camel',
         size: 'Large',
         type: 'beast',
@@ -7523,7 +7583,9 @@ const monsters = [
                 name: 'Claws',
                 desc:
                     'Melee Weapon Attack: +4 to hit, reach 5 ft., one target. Hit: 7 (2d4 + 2) slashing damage. If the target is a creature other than an elf or undead, it must succeed on a DC 10 Constitution saving throw or be paralyzed for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.',
-                attack_bonus: 0
+                attack_bonus: 4,
+                damage_dice: '2d4',
+                damage_bonus: 2
             }
         ]
     },
@@ -11659,6 +11721,79 @@ const monsters = [
                 name: 'Bite',
                 desc:
                     'Melee Weapon Attack: +0 to hit, reach 5 ft., one target. Hit: 1 piercing damage.',
+                attack_bonus: 0,
+                damage_bonus: 1
+            }
+        ]
+    },
+    {
+        name: 'Twig Blight',
+        size: 'small',
+        type: 'plant',
+        subtype: '',
+        alignment: 'neutral evil',
+        armor_class: 13,
+        hit_points: 4,
+        hit_dice: '1d6+1',
+        speed: '20 ft.',
+        strength: 6,
+        dexterity: 13,
+        constitution: 12,
+        intelligence: 4,
+        wisdom: 8,
+        charisma: 3,
+        damage_vulnerabilities: 'fire',
+        damage_resistances: '',
+        damage_immunities: '',
+        condition_immunities: 'blinded, deafened',
+        senses: 'blindsight 60ft. (blind beyond this radius),passive Perception 9, stealth + 3',
+        languages: 'common, cannot speak',
+        challenge_rating: 0.25,
+        actions: [
+            {
+                name: 'Claws',
+                desc: 'Melee Weapon Attack: +3 to hit, reach 5 ft. , one target. Hit:3 (1d4 + 1) piercing damage.',
+                attack_bonus: 3,
+                damage_dice: '1d4',
+                damage_bonus: 1
+            }
+        ]
+    },
+    {
+        name: 'Vine Blight',
+        size: 'medium',
+        type: 'plant',
+        subtype: '',
+        alignment: 'neutral evil',
+        armor_class: 12,
+        hit_points: 26,
+        hit_dice: '2d8+8',
+        speed: '10 ft.',
+        strength: 15,
+        dexterity: 8,
+        constitution: 14,
+        intelligence: 5,
+        wisdom: 10,
+        charisma: 3,
+        damage_vulnerabilities: '',
+        damage_resistances: '',
+        damage_immunities: '',
+        condition_immunities: 'blinded, deafened',
+        senses: 'blindsight 60ft. (blind beyond this radius),passive Perception 10, stealth + 1',
+        languages: 'common, cannot speak',
+        challenge_rating: 0.25,
+        actions: [
+            {
+                name: 'Constrict',
+                desc:
+                    'Melee Weapon Attack:+4 to hit, reach 10ft., one target. Hit: 9 (2d6 + 2) bludgeoning damage, and a Large or smaller target is grappled (escape DC 12). Until this grapple ends, the target is restrained, and the blight can\'t constrict another target.',
+                attack_bonus: 4,
+                damage_dice: '2d6',
+                damage_bonus: 2
+            }, {
+                name: 'Entangling Plants',
+                desc:
+                    '(Recharge 5-6). Grasping roots and vines sprout in a 15-foot radius centered on the blight, withering away after 1 minute. For the duration, that area is difficult terrain for nonplant creatures. In addition, each creature ofthe blight\'s choice in that area when the plants appear must succeed on a DC 12 Strength saving throw or become restrained . A creature can use its action to make a DC 12 Strength check, freeing itself or another entangled creature within reach on a success.',
                 attack_bonus: 0,
                 damage_bonus: 1
             }

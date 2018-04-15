@@ -12,17 +12,26 @@ const routes = [
     { path: '/spells', component: spells },
     { path: '/weapons', component: weapons },
     { path: '/encounter', component: encounter }
-    // { path: '/settings', component: settings, name: 'settings' }
 ];
 
 const router = new VueRouter({ routes });
 
+const encounterPersist = store => {
+  store.subscribe((mutation, state) => {
+    if (mutation.type === 'saveEncounter' || mutation.type === 'removeEncounter') {
+        localStorage.setItem('savedEncounter', JSON.stringify(state.savedEncounters));
+    }
+  })
+}
+
 const store = new Vuex.Store({
+    plugins: [encounterPersist],
     state: {
         monstersData,
         spellsData,
         weaponsData,
-        encounter: []
+        encounter: [],
+        savedEncounters: JSON.parse(localStorage.getItem('savedEncounter')) || {}
     },
     mutations: {
         addToEncounter(state, monster) {
@@ -33,6 +42,31 @@ const store = new Vuex.Store({
             state.encounter = state.encounter.concat([
                 Object.assign({ id: md5hash }, monster)
             ]);
+        },
+        removeFromEncounter(state, id) {
+            state.encounter = state.encounter.filter(singleMonster => {
+                return singleMonster.id !== id;
+            });
+        },
+        saveEncounter(state, encounter) {
+            state.savedEncounters[encounter.name] = encounter;
+        },
+        removeEncounter(state, name) {
+            const savedEncounters = Object.keys(state.savedEncounters).reduce((newObj, singleKey) => {
+                if (singleKey === name) {
+                    return newObj;
+                }
+
+                newObj = Object.assign({}, newObj, { [singleKey]: state.savedEncounters[singleKey]});
+                return newObj;
+            }, {});
+            state.savedEncounters = savedEncounters;
+        },
+        loadEncounter(state, name) {
+            state.encounter = JSON.parse(state.savedEncounters[name].data);
+        },
+        importEncounter(state, encounterData) {
+            state.encounter = JSON.parse(encounterData);
         }
     }
 });
