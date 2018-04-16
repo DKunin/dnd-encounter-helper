@@ -94,7 +94,9 @@ const encounter = {
             this.$store.commit('importEncounter', this.tempEncounter);
         },
         removeMonster(id) {
-            this.$store.commit('removeFromEncounter', id);
+            if (window.confirm('Are you sure?')) {
+                this.$store.commit('removeFromEncounter', id);
+            }
         }
     },
     data() {

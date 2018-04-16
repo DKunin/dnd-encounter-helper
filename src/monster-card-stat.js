@@ -5,6 +5,7 @@ const template = `
               <input type="checkbox">
               took turn
             </label>
+            <a @click="cloneMonster(monster)">clone</a>
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
@@ -101,7 +102,7 @@ const template = `
 
             </ul>
             <div class="field is-horizontal">
-                <textarea class="textarea" placeholder="notes"></textarea>
+                <textarea class="textarea" placeholder="notes" v-model="monster.notes"></textarea>
             </div>
             <details>
                 <summary>Additions</summary>
@@ -121,7 +122,7 @@ const template = `
 
 const monsterShortStat = {
     props: {
-         monster: {
+        monster: {
             type: Object,
             default: {}
         }
@@ -136,9 +137,19 @@ const monsterShortStat = {
     },
     methods: {
         abilityScoreModifier(amount) {
-            const mod =  Math.floor((amount - 10) / 2);
+            const mod = Math.floor((amount - 10) / 2);
             return mod > 0 ? `+${mod}` : mod;
-        } 
+        },
+        cloneMonster(monster) {
+            let monsterNoId = Object.keys(monster).reduce((newObj, singlekey) => {
+                if (singlekey !== 'id') {
+                    newObj[singlekey] = monster[singlekey];
+                    return newObj;
+                }
+                return newObj;
+            }, {});
+            this.$store.commit('addToEncounter', monsterNoId);
+        }
     },
     template
 };

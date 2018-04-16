@@ -130,6 +130,15 @@ const template = `
           </ul>
         </div>
         <router-view />
+        <footer class="footer">
+          <div class="container">
+            <div class="content has-text-centered">
+              <p>
+                What do they see, what do they hear, what do they smell, how do they feel, what enemies look like
+              </p>
+            </div>
+          </div>
+        </footer>
     </div>
 `;
 
