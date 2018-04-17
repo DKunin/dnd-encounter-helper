@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <style>
-        .main-container, html, body {
-            height: 100%;
+        .main-container, html, body, body > main {
+            min-height: 100%;
+            font-family: Georgia, serif;
             /*background-color: hsl(0, 0%, 21%);
             color: hsl(0, 0%, 96%);*/
         }
+
+        .main-container {
+        }
+
         .encounter-monsters {
             display: flex;
             flex-wrap: wrap;
@@ -27,6 +32,9 @@
         }
         summary:focus, details:focus {
             outline: none;
+        }
+        .footer {
+            padding: 3rem 1.5rem;
         }
     </style>
 </head>

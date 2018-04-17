@@ -1,11 +1,15 @@
+// Data
+import monstersData from '../data/monsters.js';
+import spellsData from '../data/spells.js';
+import weaponsData from '../data/weapons.js';
+
+// Pages
 import monsters from './monsters.js';
 import spells from './spells.js';
 import party from './party.js';
 import weapons from './weapons.js';
 import encounter from './encounter.js';
-import monstersData from '../data/monsters.js';
-import spellsData from '../data/spells.js';
-import weaponsData from '../data/weapons.js';
+import misc from './misc.js';
 
 const routes = [
     { path: '/', redirect: '/encounter' },
@@ -13,7 +17,8 @@ const routes = [
     { path: '/spells', component: spells },
     { path: '/party', component: party },
     { path: '/weapons', component: weapons },
-    { path: '/encounter', component: encounter }
+    { path: '/encounter', component: encounter },
+    { path: '/misc', component: misc }
 ];
 
 const router = new VueRouter({ routes });
@@ -118,18 +123,20 @@ const store = new Vuex.Store({
 });
 
 const template = `
-    <div class="container main-container">
-        <div class="tabs">
-          <ul>
-            <li><router-link to="/monsters">Monsters</router-link></li>
-            <li><router-link to="/spells">Spells</router-link></li>
-            <li><router-link to="/weapons">Weapons</router-link></li>
-            <li><router-link to="/encounter">Encounters <span v-if="$store.state.encounter.length">({{ $store.state.encounter.length }})</span></router-link></li>
-            <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
-            <li><router-link to="/misc">Misc</router-link></li>
-          </ul>
+    <main>
+        <div class="container main-container">
+            <div class="tabs">
+              <ul>
+                <li><router-link to="/monsters">Monsters</router-link></li>
+                <li><router-link to="/spells">Spells</router-link></li>
+                <li><router-link to="/weapons">Weapons</router-link></li>
+                <li><router-link to="/encounter">Encounters <span v-if="$store.state.encounter.length">({{ $store.state.encounter.length }})</span></router-link></li>
+                <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
+                <li><router-link to="/misc">Misc</router-link></li>
+              </ul>
+            </div>
+            <router-view />
         </div>
-        <router-view />
         <footer class="footer">
           <div class="container">
             <div class="content has-text-centered">
@@ -139,7 +146,7 @@ const template = `
             </div>
           </div>
         </footer>
-    </div>
+    </main>
 `;
 
 const app = {
