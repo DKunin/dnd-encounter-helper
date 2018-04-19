@@ -54,6 +54,7 @@ const store = new Vuex.Store({
         monstersData,
         spellsData,
         weaponsData,
+        additionalModal: { modalState: false },
         encounter: [],
         savedEncounters:
             JSON.parse(localStorage.getItem('savedEncounter')) || {}
@@ -67,6 +68,27 @@ const store = new Vuex.Store({
             state.encounter = state.encounter.concat([
                 Object.assign({ id: md5hash }, monster)
             ]);
+        },
+        addStuffToMonster(state, object) {
+            state.encounter = state.encounter.map(singleMonster => {
+                if (singleMonster.id === object.monsterId) {
+                    singleMonster['additional_weapon'] = singleMonster['additional_weapon'] ? singleMonster['additional_weapon'].concat(object.additionalWeapon) : object.additionalWeapon;
+
+                    singleMonster['additional_spells'] = singleMonster['additional_spells'] ? singleMonster['additional_spells'].concat(object.additionalSpell) : object.additionalSpell;
+                    singleMonster.time = new Date().getTime();
+                }
+                return singleMonster;
+            });
+        },
+        removeWeaponFromMonster(state, { monsterId, weaponName, attributeName }) {
+            state.encounter = state.encounter.map(singleMonster => {
+                if (singleMonster.id === monsterId) {
+                    singleMonster['additional_' + attributeName] = singleMonster['additional_' + attributeName].filter(singleWeapon => {
+                        return singleWeapon.name != weaponName;
+                    })
+                }
+                return singleMonster;
+            });
         },
         removeFromEncounter(state, id) {
             state.encounter = state.encounter.filter(singleMonster => {
@@ -118,6 +140,9 @@ const store = new Vuex.Store({
             state.party = state.party.filter(singleMember => {
                 return singleMember.id !== id;
             });
+        },
+        toggleModal(state, newState) {
+            state.additionalModal = newState;
         }
     }
 });

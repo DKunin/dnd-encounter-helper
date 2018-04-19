@@ -1,6 +1,7 @@
 const template = `
         <div>
             <h4>{{ monster.name }}</h4>
+            <span>{{ monster.time }}</span>
             <label class="checkbox">
               <input type="checkbox">
               took turn
@@ -13,7 +14,7 @@ const template = `
               </div>
               <div class="field-body">
                 <div class="field">
-                    <input class="input"  v-model="monster.name">
+                    <input class="input" v-model="monster.name">
                 </div>
               </div>
             </div>
@@ -60,12 +61,19 @@ const template = `
                 <li v-for="additional_weapon in monster.additional_weapon">
                     <span>{{ additional_weapon.name }}</span> <span>{{ additional_weapon.damage }}</span>
                     <span>{{ additional_weapon.properties ? additional_weapon.properties.join(', ') : additional_weapon.properties }}</span>
+                    <a class="button" @click="removeAttribute(monster.id, additional_weapon.name, 'weapon')">
+                        <i class="fas fa-minus-square"></i>
+                    </a>
                 </li>
                 <b v-if="monster.additional_spells">Additional spells</b>
-                <li v-for="additional_spells in monster.additional_spells">
-                    <span>{{ additional_spells.name }}</span>
+                <li v-for="additional_spell in monster.additional_spells">
+                    <span>{{ additional_spell.name }}</span>
+                    <a class="button" @click="removeAttribute(monster.id, additional_spell.name, 'spells')">
+                        <i class="fas fa-minus-square"></i>
                 </li>
-
+                <a class="button" @click="openModalHandler(monster.id)">
+                    <i class="fas fa-plus-square"></i>
+                </a>
                 <li v-for="action in monster.actions" :title="action.desc">
                     {{ action.name }},
                     hit: +{{ action.attack_bonus}}
@@ -104,19 +112,6 @@ const template = `
             <div class="field is-horizontal">
                 <textarea class="textarea" placeholder="notes" v-model="monster.notes"></textarea>
             </div>
-            <details>
-                <summary>Additions</summary>
-                <div class="select is-multiple">
-                    <select v-model="monster.additional_weapon" multiple size="4">
-                        <option v-for="weapon in weapons" :value="weapon" >{{ weapon.name }}</option>
-                    </select>
-                </div>
-                <div class="select is-multiple">
-                    <select v-model="monster.additional_spells" multiple size="4">
-                        <option v-for="spell in spells" :value="spell" >{{ spell.name }}</option>
-                    </select>
-                </div>
-            </details>
         </div>
     `;
 
@@ -125,6 +120,10 @@ const monsterShortStat = {
         monster: {
             type: Object,
             default: {}
+        },
+        openModal: {
+            type: Function,
+            default: () => {}
         }
     },
     computed: {
@@ -149,6 +148,12 @@ const monsterShortStat = {
                 return newObj;
             }, {});
             this.$store.commit('addToEncounter', monsterNoId);
+        },
+        openModalHandler(id) {
+            this.$store.commit('toggleModal', { modalState: true, monsterId: id });
+        },
+        removeAttribute(monsterId, weaponName, attributeName) {
+            this.$store.commit('removeWeaponFromMonster', { monsterId, weaponName, attributeName });
         }
     },
     template

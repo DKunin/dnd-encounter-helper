@@ -1,5 +1,30 @@
 const template = `
         <main class="section">
+            <div :class="{ 'modal': true, 'is-active': openedAdditionalModal.modalState }">
+              <div class="modal-background"></div>
+              <div class="modal-content">
+                <div class="box">
+                  <article class="media">
+                    <div class="media-content">
+                      <div class="content">
+                        <div class="select is-multiple">
+                            <select multiple size="4" v-model="additionalWeapon">
+                                <option v-for="weapon in weapons" :value="weapon" >{{ weapon.name }}</option>
+                            </select>
+                        </div>
+                        <div class="select is-multiple">
+                            <select multiple size="4" v-model="additionalSpell">
+                                <option v-for="spell in spells" :value="spell" >{{ spell.name }}</option>
+                            </select>
+                        </div>
+                        <a class="button" @click="additionalStuffForMonster(additionalWeapon, additionalSpell)">Save</a>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <button class="modal-close is-large" @click="closeModal" aria-label="close"></button>
+            </div>
             <nav class="level">
               <div class="level-left">
                 <div class="level-item">
@@ -16,7 +41,7 @@ const template = `
 
             <div class="encounter-monsters">
                 <div class="tile is-3 is-vertical is-child" v-for="monster in encounter">
-                    <monster-card-stat :monster="monster" />
+                    <monster-card-stat :monster="monster" :openModal="openModal" />
                     <a class="button" @click="removeMonster(monster.id)">
                         <i class="fas fa-minus-square"></i>
                     </a>
@@ -53,11 +78,18 @@ const encounter = {
         },
         savedEncounters() {
             return this.$store.state.savedEncounters;
+        },
+        openedAdditionalModal() {
+            return this.$store.state.additionalModal;
+        },
+        weapons() {
+            return this.$store.state.weaponsData;
+        },
+        spells() {
+            return this.$store.state.spellsData;
         }
     },
-    mounted() {
-        console.log(this.$store.state.encounter);
-    },
+    mounted() {},
     methods: {
         importFile(event) {
             const file = event.target.files[0];
@@ -97,10 +129,25 @@ const encounter = {
             if (window.confirm('Are you sure?')) {
                 this.$store.commit('removeFromEncounter', id);
             }
+        },
+        additionalStuffForMonster() {
+            this.$store.commit('addStuffToMonster', {
+                monsterId: this.$store.state.additionalModal.monsterId,
+                additionalWeapon: this.additionalWeapon,
+                additionalSpell: this.additionalSpell
+            });
+        },
+        closeModal() {
+            this.$store.commit('toggleModal', { modalState: false });
+        },
+        openModal() {
+            this.$store.commit('toggleModal', { modalState: true });
         }
     },
     data() {
         return {
+            additionalWeapon: null,
+            additionalSpell: null,
             name: '',
             tempEncounter: ''
         };
