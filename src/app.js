@@ -72,20 +72,40 @@ const store = new Vuex.Store({
         addStuffToMonster(state, object) {
             state.encounter = state.encounter.map(singleMonster => {
                 if (singleMonster.id === object.monsterId) {
-                    singleMonster['additional_weapon'] = singleMonster['additional_weapon'] ? singleMonster['additional_weapon'].concat(object.additionalWeapon) : object.additionalWeapon;
+                    singleMonster['additional_weapon'] = singleMonster[
+                        'additional_weapon'
+                    ]
+                        ? singleMonster['additional_weapon'].concat(
+                              object.additionalWeapon
+                          )
+                        : object.additionalWeapon;
 
-                    singleMonster['additional_spells'] = singleMonster['additional_spells'] ? singleMonster['additional_spells'].concat(object.additionalSpell) : object.additionalSpell;
+                    singleMonster['additional_spells'] = singleMonster[
+                        'additional_spells'
+                    ]
+                        ? singleMonster['additional_spells'].add(
+                              object.additionalSpell
+                          )
+                        : new Set(object.additionalSpell);
                     singleMonster.time = new Date().getTime();
+                    console.log(singleMonster['additional_spells']);
                 }
                 return singleMonster;
             });
         },
-        removeWeaponFromMonster(state, { monsterId, weaponName, attributeName }) {
+        removeWeaponFromMonster(
+            state,
+            { monsterId, weaponName, attributeName }
+        ) {
             state.encounter = state.encounter.map(singleMonster => {
                 if (singleMonster.id === monsterId) {
-                    singleMonster['additional_' + attributeName] = singleMonster['additional_' + attributeName].filter(singleWeapon => {
-                        return singleWeapon.name != weaponName;
-                    })
+                    singleMonster[
+                        'additional_' + attributeName
+                    ] = singleMonster['additional_' + attributeName].filter(
+                        singleWeapon => {
+                            return singleWeapon.name != weaponName;
+                        }
+                    );
                 }
                 return singleMonster;
             });
@@ -99,18 +119,19 @@ const store = new Vuex.Store({
             state.savedEncounters[encounter.name] = encounter;
         },
         removeEncounter(state, name) {
-            const savedEncounters = Object.keys(
-                state.savedEncounters
-            ).reduce((newObj, singleKey) => {
-                if (singleKey === name) {
-                    return newObj;
-                }
+            const savedEncounters = Object.keys(state.savedEncounters).reduce(
+                (newObj, singleKey) => {
+                    if (singleKey === name) {
+                        return newObj;
+                    }
 
-                newObj = Object.assign({}, newObj, {
-                    [singleKey]: state.savedEncounters[singleKey]
-                });
-                return newObj;
-            }, {});
+                    newObj = Object.assign({}, newObj, {
+                        [singleKey]: state.savedEncounters[singleKey]
+                    });
+                    return newObj;
+                },
+                {}
+            );
             state.savedEncounters = savedEncounters;
         },
         loadEncounter(state, name) {

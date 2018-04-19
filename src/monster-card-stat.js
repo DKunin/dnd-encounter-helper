@@ -66,7 +66,8 @@ const template = `
                     </a>
                 </li>
                 <b v-if="monster.additional_spells">Additional spells</b>
-                <li v-for="additional_spell in monster.additional_spells">
+                {{monster.additional_spells}}
+                <li v-for="additional_spell in Array.from(monster.additional_spells || [])">
                     <span>{{ additional_spell.name }}</span>
                     <a class="button" @click="removeAttribute(monster.id, additional_spell.name, 'spells')">
                         <i class="fas fa-minus-square"></i>
