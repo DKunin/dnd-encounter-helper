@@ -65,74 +65,69 @@ const store = new Vuex.Store({
                 'md5',
                 monster.name + new Date().getTime()
             );
-            Vue.set(state.encounter, md5hash, monster);
-            // Vue.set(state, 'encounter', state.encounter.set(md5hash, monster));
-            // state.encounter = state.encounter.concat([
-            //     Object.assign({ id: md5hash }, monster)
-            // ]);
+            Vue.set(
+                state.encounter,
+                md5hash,
+                Object.assign({ id: md5hash }, monster)
+            );
         },
-        addStuffToMonster(state, object) {
-            const newState = state.encounter.map(singleMonster => {
-                if (singleMonster.id === object.monsterId) {
-                    singleMonster['additional_weapon'] = singleMonster[
-                        'additional_weapon'
-                    ]
-                        ? singleMonster['additional_weapon'].concat(
-                              object.additionalWeapon
-                          )
-                        : object.additionalWeapon;
+        addStuffToMonster(
+            state,
+            { monsterId, additionalWeapon, additionalSpell }
+        ) {
+            let singleMonster = state.encounter[monsterId];
 
-                    singleMonster['additional_spells'] = singleMonster[
-                        'additional_spells'
-                    ]
-                        ? singleMonster['additional_spells'].add(
-                              object.additionalSpell
-                          )
-                        : new Set(object.additionalSpell);
-                    singleMonster.time = new Date().getTime();
-                }
-                return singleMonster;
-            });
-            Vue.set(state, 'encounter', newState);
+            singleMonster['additionalWeapon'] = singleMonster[
+                'additionalWeapon'
+            ]
+                ? singleMonster['additionalWeapon'].concat(additionalWeapon)
+                : additionalWeapon;
+
+            singleMonster['additionalSpell'] = singleMonster['additionalSpell']
+                ? singleMonster['additionalSpell'].concat(additionalSpell)
+                : additionalSpell;
+
+            Vue.set(state.encounter, monsterId, singleMonster);
         },
         removeWeaponFromMonster(
             state,
             { monsterId, weaponName, attributeName }
         ) {
-            state.encounter = state.encounter.map(singleMonster => {
-                if (singleMonster.id === monsterId) {
-                    singleMonster[
-                        'additional_' + attributeName
-                    ] = singleMonster[
-                        'additional_' + attributeName
-                    ].filter(singleWeapon => {
-                        return singleWeapon.name != weaponName;
-                    });
-                }
-                return singleMonster;
+            let singleMonster = state.encounter[monsterId];
+
+            singleMonster['additional' + attributeName] = singleMonster[
+                'additional' + attributeName
+            ].filter(singleWeapon => {
+                return singleWeapon.name != weaponName;
             });
+            Vue.set(state.encounter, monsterId, singleMonster);
         },
-        removeFromEncounter(state, id) {
-            state.encounter = state.encounter.filter(singleMonster => {
-                return singleMonster.id !== id;
-            });
+        removeFromEncounter(state, monsterId) {
+            state.encounter = Object.keys(state.encounter).reduce((newObj, singleMonsterKey) => {
+                if (singleMonsterKey === monsterId) {
+                    return newObj;
+                }
+                newObj[singleMonsterKey] = state.encounter[singleMonsterKey];
+                return newObj;
+            }, {});
         },
         saveEncounter(state, encounter) {
             state.savedEncounters[encounter.name] = encounter;
         },
         removeEncounter(state, name) {
-            const savedEncounters = Object.keys(
-                state.savedEncounters
-            ).reduce((newObj, singleKey) => {
-                if (singleKey === name) {
-                    return newObj;
-                }
+            const savedEncounters = Object.keys(state.savedEncounters).reduce(
+                (newObj, singleKey) => {
+                    if (singleKey === name) {
+                        return newObj;
+                    }
 
-                newObj = Object.assign({}, newObj, {
-                    [singleKey]: state.savedEncounters[singleKey]
-                });
-                return newObj;
-            }, {});
+                    newObj = Object.assign({}, newObj, {
+                        [singleKey]: state.savedEncounters[singleKey]
+                    });
+                    return newObj;
+                },
+                {}
+            );
             state.savedEncounters = savedEncounters;
         },
         loadEncounter(state, name) {
