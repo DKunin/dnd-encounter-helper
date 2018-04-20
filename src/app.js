@@ -55,7 +55,7 @@ const store = new Vuex.Store({
         spellsData,
         weaponsData,
         additionalModal: { modalState: false },
-        encounter: [],
+        encounter: {},
         savedEncounters:
             JSON.parse(localStorage.getItem('savedEncounter')) || {}
     },
@@ -65,12 +65,14 @@ const store = new Vuex.Store({
                 'md5',
                 monster.name + new Date().getTime()
             );
-            state.encounter = state.encounter.concat([
-                Object.assign({ id: md5hash }, monster)
-            ]);
+            Vue.set(state.encounter, md5hash, monster);
+            // Vue.set(state, 'encounter', state.encounter.set(md5hash, monster));
+            // state.encounter = state.encounter.concat([
+            //     Object.assign({ id: md5hash }, monster)
+            // ]);
         },
         addStuffToMonster(state, object) {
-            state.encounter = state.encounter.map(singleMonster => {
+            const newState = state.encounter.map(singleMonster => {
                 if (singleMonster.id === object.monsterId) {
                     singleMonster['additional_weapon'] = singleMonster[
                         'additional_weapon'
@@ -88,10 +90,10 @@ const store = new Vuex.Store({
                           )
                         : new Set(object.additionalSpell);
                     singleMonster.time = new Date().getTime();
-                    console.log(singleMonster['additional_spells']);
                 }
                 return singleMonster;
             });
+            Vue.set(state, 'encounter', newState);
         },
         removeWeaponFromMonster(
             state,
@@ -101,11 +103,11 @@ const store = new Vuex.Store({
                 if (singleMonster.id === monsterId) {
                     singleMonster[
                         'additional_' + attributeName
-                    ] = singleMonster['additional_' + attributeName].filter(
-                        singleWeapon => {
-                            return singleWeapon.name != weaponName;
-                        }
-                    );
+                    ] = singleMonster[
+                        'additional_' + attributeName
+                    ].filter(singleWeapon => {
+                        return singleWeapon.name != weaponName;
+                    });
                 }
                 return singleMonster;
             });
@@ -119,19 +121,18 @@ const store = new Vuex.Store({
             state.savedEncounters[encounter.name] = encounter;
         },
         removeEncounter(state, name) {
-            const savedEncounters = Object.keys(state.savedEncounters).reduce(
-                (newObj, singleKey) => {
-                    if (singleKey === name) {
-                        return newObj;
-                    }
-
-                    newObj = Object.assign({}, newObj, {
-                        [singleKey]: state.savedEncounters[singleKey]
-                    });
+            const savedEncounters = Object.keys(
+                state.savedEncounters
+            ).reduce((newObj, singleKey) => {
+                if (singleKey === name) {
                     return newObj;
-                },
-                {}
-            );
+                }
+
+                newObj = Object.assign({}, newObj, {
+                    [singleKey]: state.savedEncounters[singleKey]
+                });
+                return newObj;
+            }, {});
             state.savedEncounters = savedEncounters;
         },
         loadEncounter(state, name) {
@@ -176,7 +177,7 @@ const template = `
                 <li><router-link to="/monsters">Monsters</router-link></li>
                 <li><router-link to="/spells">Spells</router-link></li>
                 <li><router-link to="/weapons">Weapons</router-link></li>
-                <li><router-link to="/encounter">Encounters <span v-if="$store.state.encounter.length">({{ $store.state.encounter.length }})</span></router-link></li>
+                <li><router-link to="/encounter">Encounters <span v-if="$store.state.encounter">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
                 <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
                 <li><router-link to="/misc">Misc</router-link></li>
               </ul>
