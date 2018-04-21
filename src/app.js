@@ -138,24 +138,25 @@ const store = new Vuex.Store({
         },
         addToParty(state, partyMember) {
             var md5hash =
-                partyMember.id ||
+                partyMember.partyMemberId ||
                 cryptofoo.hash('md5', partyMember.name + new Date().getTime());
-            if (partyMember.id) {
+            if (partyMember.partyMemberId) {
                 state.party = state.party.reduce((newArray, singleEntity) => {
-                    if (partyMember.id === singleEntity.id) {
+                    if (partyMember.partyMemberId === singleEntity.partyMemberId) {
                         return newArray.concat([partyMember]);
                     }
                     return newArray.concat([singleEntity]);
                 }, []);
             } else {
                 state.party = state.party.concat([
-                    Object.assign({ id: md5hash }, partyMember)
+                    Object.assign(partyMember, { partyMemberId: md5hash })
                 ]);
             }
+            console.log(state.party);
         },
-        removeFromParty(state, id) {
+        removeFromParty(state, partyMemberId) {
             state.party = state.party.filter(singleMember => {
-                return singleMember.id !== id;
+                return singleMember.partyMemberId !== partyMemberId;
             });
         },
         toggleModal(state, newState) {

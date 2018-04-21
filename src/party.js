@@ -4,11 +4,12 @@ const template = `
             <ul>
                 <li v-for="member in party">
                     <a @click="editMember(member)">{{ member.name }}</a> 
-                    <a @click="removeMember(member.id)">remove</a>
+                    <a @click="removeMember(member.partyMemberId)">remove</a>
                 </li>
             </ul>
+
             <form @submit="addToParty">
-                <input v-model="id" type="hidden" placeholder="id">
+                <input v-model="partyMemberId" type="hidden" placeholder="id">
                 <div class="field">
                     <div class="field">
                       <label class="label">Name</label>
@@ -48,7 +49,8 @@ const template = `
                     
                 </div>
                 
-                <button class="button">add</button>
+                <button type="submit" class="button">add</button>
+                <button type="button" @click="newPartyMember" class="button">new</button>
             </form>
         </main>
     `;
@@ -56,7 +58,7 @@ const template = `
 const party = {
     data() {
         return {
-            id: null,
+            partyMemberId: null,
             name: null,
             initiative: null,
             ac: null,
@@ -74,32 +76,31 @@ const party = {
     methods: {
         addToParty(event) {
             event.preventDefault();
-            const {
-                name,
-                id,
-                initiative,
-                ac,
-                hp,
-                misc
-            } = this;
+            const { name, partyMemberId, initiative, ac, hp, misc } = this;
 
             this.$store.commit('addToParty', {
                 name,
-                id,
+                partyMemberId,
                 initiative,
                 ac,
                 hp,
                 misc
             });
         },
-        removeMember(id) {
-            this.$store.commit('removeFromParty', id);
+        removeMember(partyMemberId) {
+            this.$store.commit('removeFromParty', partyMemberId);
+        },
+        newPartyMember() {
+            ['name', 'partyMemberId', 'initiative', 'ac', 'hp', 'misc'].forEach(
+                singleKey => {
+                    this[singleKey] = null;
+                }
+            );
         },
         editMember(partyMember) {
-            Object.keys(partyMember).forEach((singleKey) => {
+            Object.keys(partyMember).forEach(singleKey => {
                 this[singleKey] = partyMember[singleKey];
-            })
-
+            });
         }
     }
 };
