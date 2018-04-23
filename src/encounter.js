@@ -28,9 +28,9 @@ const template = `
               <button class="modal-close is-large" @click="closeModal" aria-label="close"></button>
             </div>
 
-            <article class="message">
+            <article class="message" v-if="party.length">
               <div class="message-header">
-                <p>Small message</p>
+                <p>Party</p>
               </div>
               <div class="message-body">
                 <li v-for="member in party">
