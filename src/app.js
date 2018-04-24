@@ -9,6 +9,7 @@ import spells from './spells.js';
 import party from './party.js';
 import weapons from './weapons.js';
 import encounter from './encounter.js';
+import encounterTable from './encounter-table.js';
 import misc from './misc.js';
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
     { path: '/party', component: party },
     { path: '/weapons', component: weapons },
     { path: '/encounter', component: encounter },
+    { path: '/encounterTable', component: encounterTable },
     { path: '/misc', component: misc }
 ];
 
@@ -55,6 +57,7 @@ const store = new Vuex.Store({
         spellsData,
         weaponsData,
         additionalModal: { modalState: false },
+        monsterModal: { modalState: false, monster: {} },
         encounter: {},
         savedEncounters:
             JSON.parse(localStorage.getItem('savedEncounter')) || {}
@@ -77,15 +80,21 @@ const store = new Vuex.Store({
         ) {
             let singleMonster = state.encounter[monsterId];
 
-            singleMonster['additionalWeapon'] = singleMonster[
-                'additionalWeapon'
-            ]
-                ? singleMonster['additionalWeapon'].concat(additionalWeapon)
-                : additionalWeapon;
+            singleMonster['additionalWeapon'] =
+                singleMonster['additionalWeapon'] &&
+                !singleMonster['additionalWeapon'].filter(
+                    ({ name }) => name != additionalWeapon.name
+                )
+                    ? singleMonster['additionalWeapon'].concat(additionalWeapon)
+                    : additionalWeapon;
 
-            singleMonster['additionalSpell'] = singleMonster['additionalSpell']
-                ? singleMonster['additionalSpell'].concat(additionalSpell)
-                : additionalSpell;
+            singleMonster['additionalSpell'] =
+                singleMonster['additionalSpell'] &&
+                !singleMonster['additionalSpell'].filter(
+                    ({ name }) => name != additionalSpell.name
+                )
+                    ? singleMonster['additionalSpell'].concat(additionalSpell)
+                    : additionalSpell;
 
             Vue.set(state.encounter, monsterId, singleMonster);
         },
@@ -103,13 +112,17 @@ const store = new Vuex.Store({
             Vue.set(state.encounter, monsterId, singleMonster);
         },
         removeFromEncounter(state, monsterId) {
-            state.encounter = Object.keys(state.encounter).reduce((newObj, singleMonsterKey) => {
-                if (singleMonsterKey === monsterId) {
+            state.encounter = Object.keys(state.encounter).reduce(
+                (newObj, singleMonsterKey) => {
+                    if (singleMonsterKey === monsterId) {
+                        return newObj;
+                    }
+                    newObj[singleMonsterKey] =
+                        state.encounter[singleMonsterKey];
                     return newObj;
-                }
-                newObj[singleMonsterKey] = state.encounter[singleMonsterKey];
-                return newObj;
-            }, {});
+                },
+                {}
+            );
         },
         saveEncounter(state, encounter) {
             state.savedEncounters[encounter.name] = encounter;
@@ -136,13 +149,18 @@ const store = new Vuex.Store({
         importEncounter(state, encounterData) {
             state.encounter = JSON.parse(encounterData);
         },
+        clearEncounter(state) {
+            state.encounter = {};
+        },
         addToParty(state, partyMember) {
             var md5hash =
                 partyMember.partyMemberId ||
                 cryptofoo.hash('md5', partyMember.name + new Date().getTime());
             if (partyMember.partyMemberId) {
                 state.party = state.party.reduce((newArray, singleEntity) => {
-                    if (partyMember.partyMemberId === singleEntity.partyMemberId) {
+                    if (
+                        partyMember.partyMemberId === singleEntity.partyMemberId
+                    ) {
                         return newArray.concat([partyMember]);
                     }
                     return newArray.concat([singleEntity]);
@@ -152,7 +170,6 @@ const store = new Vuex.Store({
                     Object.assign(partyMember, { partyMemberId: md5hash })
                 ]);
             }
-            console.log(state.party);
         },
         removeFromParty(state, partyMemberId) {
             state.party = state.party.filter(singleMember => {
@@ -161,6 +178,12 @@ const store = new Vuex.Store({
         },
         toggleModal(state, newState) {
             state.additionalModal = newState;
+        },
+        toggleMonsterModal(state, newState) {
+            state.monsterModal = {
+                modalState: newState.modalState,
+                monster: newState.monster
+            }
         }
     }
 });
@@ -173,7 +196,8 @@ const template = `
                 <li><router-link to="/monsters">Monsters</router-link></li>
                 <li><router-link to="/spells">Spells</router-link></li>
                 <li><router-link to="/weapons">Weapons</router-link></li>
-                <li><router-link to="/encounter">Encounters <span v-if="$store.state.encounter">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
+                <li><router-link to="/encounterTable">Encounter Table <span v-if="Object.keys($store.state.encounter).length">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
+                <li><router-link to="/encounter">Encounters <span v-if="Object.keys($store.state.encounter).length">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
                 <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
                 <li><router-link to="/misc">Misc</router-link></li>
               </ul>
