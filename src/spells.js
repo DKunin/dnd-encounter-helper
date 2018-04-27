@@ -1,23 +1,19 @@
 const template = `
         <main class="section">
-            <nav class="level">
-              <!-- Left side -->
-              <div class="level-left">
-                <div class="level-item">
-                  <p class="subtitle is-5">
-                    <strong>{{ spells.length }}</strong> spells
-                  </p>
-                </div>
-                <div class="level-item">
-                  <div class="field has-addons">
-                    <p class="control">
-                      <input v-model="filter" class="input" type="text">
-                    </p>
-                    <a class="button" @click="search">search</a>
+            <strong>{{ spells.length }}</strong> spells
+            <div class="level">
+                <div class="field">
+                  <div class="control">
+                    <input v-model="level"  class="input is-small" type="number" placeholder="Level">
                   </div>
                 </div>
-              </div>
-            </nav>
+                <div class="field">
+                  <div class="control">
+                    <input v-model="filter"  class="input is-small" type="text" placeholder="Search">
+                  </div>
+                </div>
+            </div>
+
             <article class="media" v-for="spell in spells">
               <figure class="media-left">
                 <p class="image is-64x64">
@@ -52,20 +48,22 @@ const template = `
 const spells = {
     data() {
         return {
+            level: null,
             filter: null,
             setFilter: null
         };
     },
     computed: {
         spells() {
-            const filter = this.setFilter;
-            if (!filter) {
-                return this.$store.state.spellsData;
-            }
+            const filter = this.filter || '';
+            const level = this.level;
             return this.$store.state.spellsData.filter(singleMonster => {
                 return (
-                    singleMonster.name.toLowerCase().includes(filter.toLowerCase())
+                    singleMonster.level === parseInt(level)
+
                 );
+            }).filter(singleMonster => {
+                return (filter ? singleMonster.name.toLowerCase().includes(filter.toLowerCase()) : true)
             });
         }
     },

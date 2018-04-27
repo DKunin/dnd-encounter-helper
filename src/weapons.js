@@ -50,7 +50,7 @@ const weapons = {
     },
     computed: {
         weapons() {
-            const filter = this.setFilter;
+            const filter = this.filter;
             if (!filter) {
                 return this.$store.state.weaponsData;
             }
