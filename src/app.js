@@ -1,6 +1,6 @@
 // Data
 import monstersData from '../data/monsters.js';
-import spellsData from '../data/spells.js';
+import { spellCasterClasses, spellsData, spellsLevels } from '../data/spells.js';
 import weaponsData from '../data/weapons.js';
 
 // Pages
@@ -55,6 +55,8 @@ const store = new Vuex.Store({
         party: JSON.parse(localStorage.getItem('savedParty')) || [],
         monstersData,
         spellsData,
+        spellsLevels,
+        spellCasterClasses,
         weaponsData,
         additionalModal: { modalState: false },
         monsterModal: { modalState: false, monster: {} },
