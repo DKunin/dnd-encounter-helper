@@ -8,7 +8,6 @@ import monsters from './monsters.js';
 import spells from './spells.js';
 import party from './party.js';
 import weapons from './weapons.js';
-import encounter from './encounter.js';
 import encounterTable from './encounter-table.js';
 import misc from './misc.js';
 
@@ -18,8 +17,7 @@ const routes = [
     { path: '/spells', component: spells },
     { path: '/party', component: party },
     { path: '/weapons', component: weapons },
-    { path: '/encounter', component: encounter },
-    { path: '/encounterTable', component: encounterTable },
+    { path: '/encounter', component: encounterTable },
     { path: '/misc', component: misc }
 ];
 
@@ -198,7 +196,6 @@ const template = `
                 <li><router-link to="/monsters">Monsters</router-link></li>
                 <li><router-link to="/spells">Spells</router-link></li>
                 <li><router-link to="/weapons">Weapons</router-link></li>
-                <li><router-link to="/encounterTable">Encounter Table <span v-if="Object.keys($store.state.encounter).length">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
                 <li><router-link to="/encounter">Encounters <span v-if="Object.keys($store.state.encounter).length">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
                 <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
                 <li><router-link to="/misc">Misc</router-link></li>
