@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <!-- Reference for pages https://app.roll20.net/compendium/dnd5e/Spells%20List?Classes%5B%5D=Sorcerer#content -->
     <style>
-        .main-container, html, body {
-            height: 100%;
+        .main-container, html, body, body > main {
+            min-height: 100%;
+            font-family: Georgia, serif;
         }
+
         .encounter-monsters {
             display: flex;
             flex-wrap: wrap;
@@ -25,6 +28,29 @@
         }
         summary:focus, details:focus {
             outline: none;
+        }
+        .footer {
+            padding: 3rem 1.5rem;
+        }
+        .tabs + .section {
+            padding-top: 0;
+        }
+        .inline-input {
+            padding: 4px;
+            font-size: 15px;
+            font-family: Georgia, serif;
+            border: none;
+            border-bottom: 1px solid #c2c2c2;
+            width: 100%;
+        }
+        .inline-input.short {
+            max-width: 60px;
+        }
+        .inline-input:active, .inline-input:focus {
+            outline: none;
+        }
+        .table {
+            width: 100%;
         }
     </style>
 </head>

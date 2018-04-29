@@ -54,9 +54,9 @@ const monsters = {
     },
     computed: {
         monsters() {
-            const filter = this.setFilter;
-            if (!filter) {
-                return this.$store.state.monstersData;
+            const filter = this.filter;
+            if (!filter || filter.length < 3) {
+                return this.$store.state.monstersData.slice(0, 10);
             }
             return this.$store.state.monstersData.filter(singleMonster => {
                 return (

@@ -5584,11 +5584,22 @@ const spellsObject = {
         time: '1 action'
     }
 };
+let spellsClassesSet = new Set();
+let spellsLevelsTemp = new Set();
 
-const spellsArray = Object.keys(
-    spellsObject
-).reduce((newArray, singleSpell) => {
-    return newArray.concat(Object.assign({ name: singleSpell }, spellsObject[singleSpell]));
-}, []);
+const spellsArrayTemp = Object.keys(spellsObject).reduce(
+    (newArray, singleSpell) => {
+        spellsObject[singleSpell].classes.forEach(singleClass => {
+            spellsClassesSet.add(singleClass);
+        });
+        spellsLevelsTemp.add(spellsObject[singleSpell].level);
+        return newArray.concat(
+            Object.assign({ name: singleSpell }, spellsObject[singleSpell])
+        );
+    },
+    []
+);
 
-export default spellsArray;
+export let spellsLevels = [...spellsLevelsTemp].sort();
+export let spellCasterClasses = [...spellsClassesSet];
+export let spellsData = spellsArrayTemp;

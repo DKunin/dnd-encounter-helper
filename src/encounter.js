@@ -1,5 +1,46 @@
+import abilityScoreModifier from './abilityScoreModifier.js';
+
 const template = `
         <main class="section">
+            <div :class="{ 'modal': true, 'is-active': openedAdditionalModal.modalState }">
+              <div class="modal-background"></div>
+              <div class="modal-content">
+                <div class="box">
+                  <article class="media">
+                    <div class="media-content">
+                      <div class="content">
+                        <div class="select is-multiple">
+                            <select multiple size="4" v-model="additionalWeapon">
+                                <option v-for="weapon in weapons" :value="weapon" >{{ weapon.name }}</option>
+                            </select>
+                        </div>
+                        <div class="select is-multiple">
+                            <select multiple size="4" v-model="additionalSpell">
+                                <option v-for="spell in spells" :value="spell" >{{ spell.name }}</option>
+                            </select>
+                        </div>
+                        <a class="button" @click="additionalStuffForMonster(additionalWeapon, additionalSpell)">Save</a>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <button class="modal-close is-large" @click="closeModal" aria-label="close"></button>
+            </div>
+
+            <article class="message" v-if="party.length">
+              <div class="message-header">
+                <p>Party</p>
+              </div>
+              <div class="message-body">
+                <li v-for="member in party">
+                    {{ member.name }} -
+                    ac: {{ member.ac }} /
+                    hp: {{ member.hp }} /
+                    <input type="number" /> + {{ member.initiative }}
+                </li>
+              </div>
+            </article>
             <nav class="level">
               <div class="level-left">
                 <div class="level-item">
@@ -15,12 +56,26 @@ const template = `
             </nav>
 
             <div class="encounter-monsters">
-                <div class="tile is-3 is-vertical is-child" v-for="monster in encounter">
-                    <monster-card-stat :monster="monster" />
-                    <a class="button" @click="removeMonster(monster.id)">
-                        <i class="fas fa-minus-square"></i>
+                <monster-card-stat v-for="(monster, key) in encounter" v-bind:key="key" :monsterId="key" :openModal="openModal">
+                    <b v-if="monster.additionalWeapon">Additional weapon</b>
+                    <li v-for="additionalWeapon in monster.additionalWeapon">
+                        <span>{{ additionalWeapon.name }}</span> <span>{{ additionalWeapon.damage }} {{ abilityScoreModifier(monster.strength) }}</span>
+                        <span>{{ additionalWeapon.properties ? additionalWeapon.properties.join(', ') : additionalWeapon.properties }}</span>
+                        <a @click="removeAttribute(monster.id, additionalWeapon.name, 'Weapon')">
+                            <i class="fas fa-minus-square"></i>
+                        </a>
+                    </li>
+                    <b v-if="monster.additionalSpell">Additional spells</b>
+                    <li v-for="additionalSpell in monster.additionalSpell">
+                        <span :title="additionalSpell.text">{{ additionalSpell.name }}</span>
+                        <a @click="removeAttribute(monster.id, additionalSpell.name, 'Spell')">
+                            <i class="fas fa-minus-square"></i>
+                        </a>
+                    </li>
+                    <a @click="openModalHandler(monster.id)">
+                        <i class="fas fa-plus-square"></i>
                     </a>
-                </div>
+                </monster-card-stat>
             </div>
             <a :href="generateFile()" download="encounter.json">
                 Download encounter
@@ -53,12 +108,23 @@ const encounter = {
         },
         savedEncounters() {
             return this.$store.state.savedEncounters;
+        },
+        openedAdditionalModal() {
+            return this.$store.state.additionalModal;
+        },
+        weapons() {
+            return this.$store.state.weaponsData;
+        },
+        spells() {
+            return this.$store.state.spellsData;
+        },
+        party() {
+            return this.$store.state.party;
         }
     },
-    mounted() {
-        console.log(this.$store.state.encounter);
-    },
+    mounted() {},
     methods: {
+        abilityScoreModifier,
         importFile(event) {
             const file = event.target.files[0];
             const fr = new FileReader();
@@ -93,12 +159,33 @@ const encounter = {
         importEncounter() {
             this.$store.commit('importEncounter', this.tempEncounter);
         },
-        removeMonster(id) {
-            this.$store.commit('removeFromEncounter', id);
-        }
+        additionalStuffForMonster() {
+            setTimeout(() => {
+                this.$store.commit('toggleModal', { modalState: false });
+            }, 40);
+            this.$store.commit('addStuffToMonster', {
+                monsterId: this.$store.state.additionalModal.monsterId,
+                additionalWeapon: this.additionalWeapon,
+                additionalSpell: this.additionalSpell
+            });
+        },
+        closeModal() {
+            this.$store.commit('toggleModal', { modalState: false });
+        },
+        openModal() {
+            this.$store.commit('toggleModal', { modalState: true });
+        },
+        openModalHandler(monsterId) {
+            this.$store.commit('toggleModal', { modalState: true, monsterId });
+        },
+        removeAttribute(monsterId, weaponName, attributeName) {
+            this.$store.commit('removeWeaponFromMonster', { monsterId, weaponName, attributeName });
+        },
     },
     data() {
         return {
+            additionalWeapon: null,
+            additionalSpell: null,
             name: '',
             tempEncounter: ''
         };
