@@ -93,7 +93,10 @@ const template = `
                         <td></td>
                         <td></td>
                     </tr>
-                    <tr v-for="(monster, key) in encounter">
+                    <tr v-for="(monster, key) in encounter" v-bind:class="{
+                        'monster-undeclared': false,
+                        'monster-dead': monster.hit_points <= 0
+                    }">
                         <td><input type="number" class="inline-input short" /></td>
                         <td><input class="inline-input" v-model="monster.name"></td>
                         <td>
