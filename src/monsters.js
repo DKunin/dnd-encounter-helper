@@ -1,7 +1,6 @@
 const template = `
         <main class="section">
             <nav class="level">
-              <!-- Left side -->
               <div class="level-left">
                 <div class="level-item">
                   <p class="subtitle is-5">
