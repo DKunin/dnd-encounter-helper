@@ -42,13 +42,24 @@ const template = `
                                 <li>int: {{ monsterModal.monster.intelligence }} ({{ abilityScoreModifier(monsterModal.monster.intelligence) }})</li>
                                 <li>wis: {{ monsterModal.monster.wisdom }} ({{ abilityScoreModifier(monsterModal.monster.wisdom) }})</li>
                                 <li>cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})</li>
+                                <li>
+                                    cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})
+                                </li>
+
+                                
                             </ul>
+                            
+                                    
+                                    
                             <ul class="column">
-                                <li v-if="monsterModal.monster.damage_vulnerabilities">damage_vulnerabilities: {{ monsterModal.monster.damage_vulnerabilities }}</li>
-                                <li v-if="monsterModal.monster.damage_resistances">damage_resistances: {{ monsterModal.monster.damage_resistances }}</li>
-                                <li v-if="monsterModal.monster.damage_immunities">damage_immunities: {{ monsterModal.monster.damage_immunities }}</li>
-                                <li v-if="monsterModal.monster.condition_immunities">condition_immunities: {{ monsterModal.monster.condition_immunities }}</li>
-                                <li v-if="monsterModal.monster.languages">languages: {{ monsterModal.monster.languages }}</li>
+                                <oline>damage_vulnerabilities: {{ monsterModal.monster.damage_vulnerabilities }}</oline>
+                                <oline>damage_resistances: {{ monsterModal.monster.damage_resistances }}</oline>
+                                <oline>damage_immunities: {{ monsterModal.monster.damage_immunities }}</oline>
+                                <oline>condition_immunities: {{ monsterModal.monster.condition_immunities }}</oline>
+                                <oline>languages: {{ monsterModal.monster.languages }}</oline>
+                                <oline>speed: {{ monsterModal.monster.speed }}</oline>
+                                <oline>perception: {{ monsterModal.monster.perception }}</oline>
+                                <oline>stealth: {{ monsterModal.monster.stealth }}</oline>
                             </ul>
                         </div>
                     </div>
@@ -64,10 +75,39 @@ const template = `
                     <p class="control">
                       <input v-model="name" class="input" type="text">
                     </p>
+                    <p class="control">
+                        <a class="button" @click="saveEncounter">Save</a>
+                    </p>
+                    <p class="control">
+                        <a class="button is-danger" @click="removeEncounter">Remove encounter</a>
+                    </p>
+                    <p class="control">
+                        <a class="button" @click="clearEncounter">
+                            Clear encounter
+                        </a>
+                    </p>
+                    <p class="control">
+                        <a class="button" :href="generateFile()" download="encounter.json">
+                            Download encounter
+                        </a>
+                    </p>
+
+                    <div class="file">
+                      <label class="file-label">
+                        <input @change="importFile" class="file-input" type="file">
+                        <span class="file-cta">
+                          <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                          </span>
+                          <span class="file-label">
+                            Upload encounter
+                          </span>
+                        </span>
+                      </label>
+                    </div>
+
                   </div>
                 </div>
-                <a class="button" @click="saveEncounter">Save</a>
-                <a class="button is-danger" @click="removeEncounter">Remove encounter</a>
               </div>
             </nav>
 
@@ -133,32 +173,12 @@ const template = `
                         </td>
                         <td>
                             <a @click="toggleInfo(monster)">info</a>
+                            <div>CR: {{ monster.challenge_rating }}</div>
+                            <div>Hit Dice: {{ monster.hit_dice }}</div>
                         </td>
                     </tr>
                 </tbody>
             </table>
-
-            <a :href="generateFile()" download="encounter.json">
-                Download encounter
-            </a>
-
-            <div class="file">
-              <label class="file-label">
-                <input @change="importFile" class="file-input" type="file">
-                <span class="file-cta">
-                  <span class="file-icon">
-                    <i class="fas fa-upload"></i>
-                  </span>
-                  <span class="file-label">
-                    Upload encounter
-                  </span>
-                </span>
-              </label>
-            </div>
-
-            <a class="button" @click="clearEncounter">
-                Clear encounter
-            </a>
 
             <h2 class="is-size-5">Saved Encounters</h2>
             <div v-for="encoun in savedEncounters">
@@ -217,8 +237,13 @@ const encounter = {
             }
         },
         removeEncounter() {
-            if (this.name) {
-                this.$store.commit('removeEncounter', this.name);
+            if (window.confirm('Are you sure?')) {
+                if (this.name) {
+                    this.$store.commit('removeEncounter', this.name);
+                    setTimeout(() => {
+                        this.$store.commit('clearEncounter');
+                    }, 50);
+                }
             }
         },
         loadEncounter(name) {
