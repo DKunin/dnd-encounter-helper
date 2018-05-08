@@ -34,6 +34,7 @@ const template = `
                 <div class="box">
                       <div class="content">
                         {{ monsterModal.monster.name }}
+                        <button @click="removeMonster(monsterModal.monster)">Remove</button>
                         <div class="columns">
                             <ul class="column">
                                 <li>str: {{ monsterModal.monster.strength }} ({{ abilityScoreModifier(monsterModal.monster.strength) }})</li>
@@ -45,12 +46,7 @@ const template = `
                                 <li>
                                     cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})
                                 </li>
-
-                                
                             </ul>
-                            
-                                    
-                                    
                             <ul class="column">
                                 <oline>damage_vulnerabilities: {{ monsterModal.monster.damage_vulnerabilities }}</oline>
                                 <oline>damage_resistances: {{ monsterModal.monster.damage_resistances }}</oline>
@@ -87,7 +83,7 @@ const template = `
                         </a>
                     </p>
                     <p class="control">
-                        <a class="button" :href="generateFile()" download="encounter.json">
+                        <a class="button" :href="generateFile()" :download="name + '.json'">
                             Download encounter
                         </a>
                     </p>
@@ -125,7 +121,7 @@ const template = `
                 </thead>
                 <tbody>
                     <tr v-for="member in party">
-                        <td><input type="number" class="inline-input short" /> + {{ member.initiative }}</td>
+                        <td><input type="number" class="inline-input short" v-model="member.initiative"/></td>
                         <td>{{ member.name }}</td>
                         <td><input type="number" class="inline-input short" />/{{ member.ac }}</td>
                         <td><input type="number" class="inline-input short" />/{{ member.hp }}</td>
@@ -137,7 +133,7 @@ const template = `
                         'monster-undeclared': false,
                         'monster-dead': monster.hit_points <= 0
                     }">
-                        <td><input type="number" class="inline-input short" /></td>
+                        <td><input type="number" class="inline-input short" v-model="monster.initiative" /></td>
                         <td><input class="inline-input" v-model="monster.name"></td>
                         <td>
                             <input class="inline-input short" type="number" v-model="monster.armor_class">
@@ -183,6 +179,7 @@ const template = `
             <h2 class="is-size-5">Saved Encounters</h2>
             <div v-for="encoun in savedEncounters">
                 <a @click="loadEncounter(encoun.name)">{{ encoun.name }}</a>
+
             </div>
         </main>
     `;
@@ -224,6 +221,12 @@ const encounter = {
         },
         generateFile() {
             var json = JSON.stringify(this.$store.state.encounter);
+            var blob = new Blob([json], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            return url;
+        },
+        downloadEncounter(encounter) {
+            var json = JSON.stringify(encounter);
             var blob = new Blob([json], { type: 'application/json' });
             var url = URL.createObjectURL(blob);
             return url;
@@ -272,7 +275,7 @@ const encounter = {
                 monster
             });
         },
-        closeMonsterModal(monsterId) {
+        closeMonsterModal() {
             this.$store.commit('toggleMonsterModal', {
                 modalState: false,
                 monster: {}
@@ -290,6 +293,15 @@ const encounter = {
                 weaponName,
                 attributeName
             });
+        },
+        removeMonster(monster) {
+            this.$store.commit('removeFromEncounter', monster.id);
+            setTimeout(() => {
+                this.$store.commit('toggleMonsterModal', {
+                    modalState: false,
+                    monster: {}
+                });
+            }, 40);
         }
     },
     data() {
