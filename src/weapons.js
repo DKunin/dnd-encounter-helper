@@ -20,8 +20,9 @@ const template = `
             </nav>
             <article class="media" v-for="weapon in weapons">
               <figure class="media-left">
-                <p class="image is-64x64">
-                    {{ weapon.damage }}
+                <p class="image is-128x128">
+                    dmg: {{ weapon.damage }}
+                    cost: {{ weapon.cost }}
                 </p>
               </figure>
               <div class="media-content">

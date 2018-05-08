@@ -183,7 +183,7 @@ const store = new Vuex.Store({
             state.monsterModal = {
                 modalState: newState.modalState,
                 monster: newState.monster
-            }
+            };
         }
     }
 });
