@@ -10,6 +10,7 @@ import party from './party.js';
 import weapons from './weapons.js';
 import encounterTable from './encounter-table.js';
 import misc from './misc.js';
+import music from './music.js';
 
 const routes = [
     { path: '/', redirect: '/encounter' },
@@ -18,7 +19,8 @@ const routes = [
     { path: '/party', component: party },
     { path: '/weapons', component: weapons },
     { path: '/encounter', component: encounterTable },
-    { path: '/misc', component: misc }
+    { path: '/misc', component: misc },
+    { path: '/music', component: music },
 ];
 
 const router = new VueRouter({ routes });
@@ -198,6 +200,7 @@ const template = `
                 <li><router-link to="/weapons">Weapons</router-link></li>
                 <li><router-link to="/encounter">Encounters <span v-if="Object.keys($store.state.encounter).length">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
                 <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
+                <li><router-link to="/music">Music</router-link></li>
                 <li><router-link to="/misc">Misc</router-link></li>
               </ul>
             </div>
