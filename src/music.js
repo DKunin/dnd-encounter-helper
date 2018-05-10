@@ -1,7 +1,6 @@
 const template = `
         <div class="section">
             <h2 class="is-size-5">Music</h2>
-
             <li><a href="https://rpg.ambient-mixer.com/fantasy-market" target="_blank">Market</a></li>
             <li><a href="https://rpg.ambient-mixer.com/road-to-phandalin" target="_blank">Outside Day</a></li>
             <li><a href="https://rpg.ambient-mixer.com/haunted-forest---night" target="_blank">Forest</a></li>

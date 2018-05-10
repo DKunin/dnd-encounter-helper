@@ -194,26 +194,40 @@ const template = `
     <main>
         <div class="container main-container">
             <div class="tabs">
-              <ul>
-                <li><router-link to="/monsters">Monsters</router-link></li>
-                <li><router-link to="/spells">Spells</router-link></li>
-                <li><router-link to="/weapons">Weapons</router-link></li>
-                <li><router-link to="/encounter">Encounters <span v-if="Object.keys($store.state.encounter).length">({{ Object.keys($store.state.encounter).length }})</span></router-link></li>
-                <li><router-link to="/party">Party <span v-if="$store.state.party.length">({{ $store.state.party.length }})</span></router-link></li>
-                <li><router-link to="/music">Music</router-link></li>
-                <li><router-link to="/misc">Misc</router-link></li>
-              </ul>
+                <ul>
+                    <li>
+                        <router-link to="/monsters">Monsters</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/spells">Spells</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/weapons">Weapons</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/encounter">Encounters</span></router-link>
+                    </li>
+                    <li>
+                        <router-link to="/party">Party</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/music">Music</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/misc">Misc</router-link>
+                    </li>
+                </ul>
             </div>
             <router-view />
         </div>
         <footer class="footer">
-          <div class="container">
-            <div class="content has-text-centered">
-              <p>
-                What do they see, what do they hear, what do they smell, how do they feel, what enemies look like
-              </p>
+            <div class="container">
+                <div class="content has-text-centered">
+                    <p>
+                        What do they see, what do they hear, what do they smell, how do they feel, what enemies look like
+                    </p>
+                </div>
             </div>
-          </div>
         </footer>
     </main>
 `;
