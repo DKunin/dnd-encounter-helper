@@ -169,6 +169,7 @@ const template = `
                         </td>
                         <td>
                             <a @click="toggleInfo(monster)">info</a>
+                            <a @click="cloneMonster(monster)">clone</a>
                             <div>CR: {{ monster.challenge_rating }}</div>
                             <div>Hit Dice: {{ monster.hit_dice }}</div>
                         </td>
@@ -293,6 +294,16 @@ const encounter = {
                 weaponName,
                 attributeName
             });
+        },
+        cloneMonster(monster) {
+            let monsterNoId = Object.keys(monster).reduce((newObj, singlekey) => {
+                if (singlekey !== 'id') {
+                    newObj[singlekey] = monster[singlekey];
+                    return newObj;
+                }
+                return newObj;
+            }, {});
+            this.$store.commit('addToEncounter', monsterNoId);
         },
         removeMonster(monster) {
             this.$store.commit('removeFromEncounter', monster.id);
