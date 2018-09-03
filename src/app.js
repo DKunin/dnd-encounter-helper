@@ -1,6 +1,10 @@
 // Data
 import monstersData from '../data/monsters.js';
-import { spellCasterClasses, spellsData, spellsLevels } from '../data/spells.js';
+import {
+    spellCasterClasses,
+    spellsData,
+    spellsLevels
+} from '../data/spells.js';
 import weaponsData from '../data/weapons.js';
 
 // Pages
@@ -20,7 +24,7 @@ const routes = [
     { path: '/weapons', component: weapons },
     { path: '/encounter', component: encounterTable },
     { path: '/misc', component: misc },
-    { path: '/music', component: music },
+    { path: '/music', component: music }
 ];
 
 const router = new VueRouter({ routes });
@@ -61,6 +65,7 @@ const store = new Vuex.Store({
         additionalModal: { modalState: false },
         monsterModal: { modalState: false, monster: {} },
         encounter: {},
+        tempClipboard: {},
         savedEncounters:
             JSON.parse(localStorage.getItem('savedEncounter')) || {}
     },
@@ -76,26 +81,41 @@ const store = new Vuex.Store({
                 Object.assign({ id: md5hash }, monster)
             );
         },
+        addToClipboard(state, monster) {
+            Vue.set(state, 'tempClipboard', monster);
+        },
+        pasteFromClipboard(state) {
+            var md5hash = cryptofoo.hash(
+                'md5',
+                state.tempClipboard.name + new Date().getTime()
+            );
+
+            Vue.set(
+                state.encounter,
+                md5hash,
+                Object.assign({ id: md5hash }, state.tempClipboard)
+            );
+        },
         addStuffToMonster(
             state,
             { monsterId, additionalWeapon, additionalSpell }
         ) {
             let singleMonster = state.encounter[monsterId];
 
-            singleMonster['additionalWeapon'] =
-                singleMonster['additionalWeapon'] &&
-                !singleMonster['additionalWeapon'].filter(
+            singleMonster.additionalWeapon =
+                singleMonster.additionalWeapon &&
+                !singleMonster.additionalWeapon.filter(
                     ({ name }) => name != additionalWeapon.name
                 )
-                    ? singleMonster['additionalWeapon'].concat(additionalWeapon)
+                    ? singleMonster.additionalWeapon.concat(additionalWeapon)
                     : additionalWeapon;
 
-            singleMonster['additionalSpell'] =
-                singleMonster['additionalSpell'] &&
-                !singleMonster['additionalSpell'].filter(
+            singleMonster.additionalSpell =
+                singleMonster.additionalSpell &&
+                !singleMonster.additionalSpell.filter(
                     ({ name }) => name != additionalSpell.name
                 )
-                    ? singleMonster['additionalSpell'].concat(additionalSpell)
+                    ? singleMonster.additionalSpell.concat(additionalSpell)
                     : additionalSpell;
 
             Vue.set(state.encounter, monsterId, singleMonster);
@@ -114,35 +134,32 @@ const store = new Vuex.Store({
             Vue.set(state.encounter, monsterId, singleMonster);
         },
         removeFromEncounter(state, monsterId) {
-            state.encounter = Object.keys(state.encounter).reduce(
-                (newObj, singleMonsterKey) => {
-                    if (singleMonsterKey === monsterId) {
-                        return newObj;
-                    }
-                    newObj[singleMonsterKey] =
-                        state.encounter[singleMonsterKey];
+            state.encounter = Object.keys(
+                state.encounter
+            ).reduce((newObj, singleMonsterKey) => {
+                if (singleMonsterKey === monsterId) {
                     return newObj;
-                },
-                {}
-            );
+                }
+                newObj[singleMonsterKey] = state.encounter[singleMonsterKey];
+                return newObj;
+            }, {});
         },
         saveEncounter(state, encounter) {
             state.savedEncounters[encounter.name] = encounter;
         },
         removeEncounter(state, name) {
-            const savedEncounters = Object.keys(state.savedEncounters).reduce(
-                (newObj, singleKey) => {
-                    if (singleKey === name) {
-                        return newObj;
-                    }
-
-                    newObj = Object.assign({}, newObj, {
-                        [singleKey]: state.savedEncounters[singleKey]
-                    });
+            const savedEncounters = Object.keys(
+                state.savedEncounters
+            ).reduce((newObj, singleKey) => {
+                if (singleKey === name) {
                     return newObj;
-                },
-                {}
-            );
+                }
+
+                newObj = Object.assign({}, newObj, {
+                    [singleKey]: state.savedEncounters[singleKey]
+                });
+                return newObj;
+            }, {});
             state.savedEncounters = savedEncounters;
         },
         loadEncounter(state, name) {

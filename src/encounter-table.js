@@ -83,6 +83,11 @@ const template = `
                         </a>
                     </p>
                     <p class="control">
+                        <a class="button" @click="pasteToEncounter">
+                            Paste
+                        </a>
+                    </p>
+                    <p class="control">
                         <a class="button" :href="generateFile()" :download="name + '.json'">
                             Download encounter
                         </a>
@@ -166,11 +171,16 @@ const template = `
                             <a @click="openModalHandler(monster.id)">
                                 <i class="fas fa-plus-square"></i>
                             </a>
+                            <div>
+                            <textarea v-model="monster.comment" id="" cols="30" rows="10"></textarea>
+                            </div>
                         </td>
                         <td>
                             <a @click="toggleInfo(monster)">info</a>
                             <a @click="cloneMonster(monster)">clone</a>
+                            <a @click="copyMonster(monster)">copy</a>
                             <div>CR: {{ monster.challenge_rating }}</div>
+                            <div>Exp: {{ monster.challenge_rating * 100 }}</div>
                             <div>Hit Dice: {{ monster.hit_dice }}</div>
                         </td>
                     </tr>
@@ -304,6 +314,19 @@ const encounter = {
                 return newObj;
             }, {});
             this.$store.commit('addToEncounter', monsterNoId);
+        },
+        copyMonster(monster) {
+            let monsterNoId = Object.keys(monster).reduce((newObj, singlekey) => {
+                if (singlekey !== 'id') {
+                    newObj[singlekey] = monster[singlekey];
+                    return newObj;
+                }
+                return newObj;
+            }, {});
+            this.$store.commit('addToClipboard', monsterNoId);
+        },
+        pasteToEncounter() {
+            this.$store.commit('pasteFromClipboard');
         },
         removeMonster(monster) {
             this.$store.commit('removeFromEncounter', monster.id);
