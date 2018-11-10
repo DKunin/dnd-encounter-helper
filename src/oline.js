@@ -17,7 +17,7 @@ const oline = {
     },
     template,
     mounted() {
-        console.log(this.$slots);
+        // console.log(this.$slots);
     }
 };
 

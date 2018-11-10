@@ -81,7 +81,6 @@ const spells = {
             const level = this.level;
             const casterClass = this.casterClass;
             const showFull = this.showFull;
-            console.log(showFull);
             return this.$store.state.spellsData.filter(singleSpell => {
                 if (!level) {
                     return true;
@@ -93,7 +92,7 @@ const spells = {
                 if (!casterClass) {
                     return true;
                 }
-                return singleSpell.classes.some(singleItem => {
+                return (singleSpell.classes || []).some(singleItem => {
                     return casterClass.includes(singleItem);
                 })
             });

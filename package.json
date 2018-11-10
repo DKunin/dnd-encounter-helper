@@ -20,6 +20,8 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "gh-pages": "1.1.0"
+    "gh-pages": "1.1.0",
+    "meow": "^5.0.0",
+    "unique-random-array": "^1.0.1"
   }
 }
