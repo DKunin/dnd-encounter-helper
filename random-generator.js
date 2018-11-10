@@ -3,6 +3,9 @@
 const fs = require('fs');
 const monsters = require('./data/monsters-n.js');
 const meow = require('meow');
+const uniqueRandomArray = require('unique-random-array');
+
+// console.log(random(), random(), random(), random());
 
 const cli = meow(
     ``,
@@ -18,11 +21,14 @@ const classes = Object.keys(monsters.reduce((newArray, singleItem) => {
 	return newArray;
 }, {})).filter(Boolean);
 
-const monstersChallenge = monsters.filter(singleMonster => {
+const monstersChallenge = uniqueRandomArray(monsters.filter(singleMonster => {
 	return singleMonster['challenge_rating'] < cli.flags.c;
-});
+}));
 
-console.log(monstersChallenge, classes);
+console.log(monstersChallenge());
+console.log(monstersChallenge());
+console.log(monstersChallenge());
+console.log(monstersChallenge());
 
 // if (!cli.input.length) {
 //     cli.showHelp(-1);
