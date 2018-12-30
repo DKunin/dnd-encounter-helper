@@ -23,7 +23,7 @@ const classes = Object.keys(monsters.reduce((newArray, singleItem) => {
 
 const monstersChallenge = uniqueRandomArray(monsters.filter(singleMonster => {
 	return singleMonster['challenge_rating'] < cli.flags.c;
-}));
+}));s
 
 console.log(monstersChallenge());
 console.log(monstersChallenge());
