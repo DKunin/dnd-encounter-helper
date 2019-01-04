@@ -139,6 +139,8 @@
     },
     "globals": {
         "Vue": true,
+        "chance": true,
+        "Konva": true,
         "cryptofoo": true,
         "VueRouter": true,
         "VueResource": true,

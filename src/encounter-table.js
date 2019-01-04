@@ -2,6 +2,7 @@ import abilityScoreModifier from './abilityScoreModifier.js';
 
 const template = `
         <main class="section">
+            
             <div :class="{ 'modal': true, 'is-active': openedAdditionalModal.modalState }">
               <div class="modal-background"></div>
               <div class="modal-content">
@@ -69,6 +70,9 @@ const template = `
                 <div class="level-item">
                   <div class="field has-addons">
                     <p class="control">
+                        <a class="button" @click="sideBarToggle">+</a>
+                    </p>
+                    <p class="control">
                       <input v-model="name" class="input" type="text">
                     </p>
                     <p class="control">
@@ -111,86 +115,94 @@ const template = `
                 </div>
               </div>
             </nav>
+            
+            <div class="columns">
+              <div class="column" v-if="isSidebarActive">
+                <monstersTable></monstersTable>
+              </div>
 
-            <table class="table is-bordered">
-                <thead>
-                    <tr>
-                        <th>initiative</th>
-                        <th>name</th>
-                        <th>ac</th>
-                        <th>hp</th>
-                        <th>weapon</th>
-                        <th>additional weapon</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="member in party">
-                        <td><input type="number" class="inline-input short" v-model="member.initiative"/></td>
-                        <td>{{ member.name }}</td>
-                        <td><input type="number" class="inline-input short" />/{{ member.ac }}</td>
-                        <td><input type="number" class="inline-input short" />/{{ member.hp }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr v-for="(monster, key) in encounter" v-bind:class="{
-                        'monster-undeclared': false,
-                        'monster-dead': monster.hit_points <= 0
-                    }">
-                        <td><input type="number" class="inline-input short" v-model="monster.initiative" /></td>
-                        <td><input class="inline-input" v-model="monster.name"></td>
-                        <td>
-                            <input class="inline-input short" type="number" v-model="monster.armor_class">
-                        </td>
-                        <td>
-                            <input class="inline-input short" type="number" v-model="monster.hit_points">
-                        </td>
-                        <td>
-                            <li v-for="action in monster.actions" :title="action.desc">
-                                {{ action.name }},
-                                hit: +{{ action.attack_bonus}}
-                                <span v-if="action.damage_dice">, dmg: {{ action.damage_dice }}
-                                <span v-if="action.damage_bonus">+{{ action.damage_bonus }}</span></span>
-                            </li>
-                        </td>
-                        <td>
-                            <li v-for="additionalWeapon in monster.additionalWeapon">
-                                <span>{{ additionalWeapon.name }}</span> <span>{{ additionalWeapon.damage }} {{ abilityScoreModifier(monster.strength) }}</span>
-                                <span>{{ additionalWeapon.properties ? additionalWeapon.properties.join(', ') : additionalWeapon.properties }}</span>
-                                <a @click="removeAttribute(monster.id, additionalWeapon.name, 'Weapon')">
-                                    <i class="fas fa-minus-square"></i>
-                                </a>
-                            </li>
-                            <li v-for="additionalSpell in monster.additionalSpell">
-                                <span :title="additionalSpell.text">{{ additionalSpell.name }}</span>
-                                <a @click="removeAttribute(monster.id, additionalSpell.name, 'Spell')">
-                                    <i class="fas fa-minus-square"></i>
-                                </a>
-                            </li>
-                            <a @click="openModalHandler(monster.id)">
-                                <i class="fas fa-plus-square"></i>
-                            </a>
-                            <div>
-                            <textarea v-model="monster.comment" id="" cols="30" rows="10"></textarea>
-                            </div>
-                        </td>
-                        <td>
-                            <a @click="toggleInfo(monster)">info</a>
-                            <a @click="cloneMonster(monster)">clone</a>
-                            <a @click="copyMonster(monster)">copy</a>
-                            <div>CR: {{ monster.challenge_rating }}</div>
-                            <div>Exp: {{ monster.challenge_rating * 100 }}</div>
-                            <div>Hit Dice: {{ monster.hit_dice }}</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+              </div>
+              <div :class="sideBarClass">
+                    <table class="table is-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>weapon</th>
+                                <th>traits</th>
+                                <th>rating: {{ encounterRating }} / exp: {{ encounterExperience }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="monster in encounter" v-bind:class="{
+                                'monster-undeclared': false,
+                                'monster-dead': monster.hit_points <= 0
+                            }">
+                                <td>
+                                    <h4 class="is-size-5 has-text-weight-bold">
+                                        <span @click="monsterMoveUp(monster.id)"><i class="fas fa-sort-up"></i></span>
+                                        <span @click="monsterMoveDown(monster.id)"><i class="fas fa-sort-down"></i></span>
+                                        {{ monster.sortOrder}} {{monster.name}}
+                                    </h4>
+                                    <div>
+                                        Init: <input type="number" class="inline-input short" v-model="monster.initiative" />
+                                    </div>
+                                    <div>
+                                        AC: <input class="inline-input short" type="number" v-model="monster.armor_class">
+                                    </div>
+                                    <div>
+                                        <div @dblclick="generateHitPoints(monster)">HP:</div> <input class="inline-input short" type="number" v-model="monster.hit_points">
+                                    </div>
+                                    Name: <input class="inline-input short" v-model="monster.name">
+                                </td>
+      
+                                <td>
+                                    <li v-for="action in monster.actions" :title="action.desc">
+                                        {{ action.name }},
+                                        hit: +{{ action.attack_bonus}}
+                                        <span v-if="action.damage_dice">, dmg: {{ action.damage_dice }}
+                                        <span v-if="action.damage_bonus">+{{ action.damage_bonus }}</span></span>
+                                    </li>
+                                    <li v-for="additionalWeapon in monster.additionalWeapon">
+                                        <span>{{ additionalWeapon.name }}</span> <span>{{ additionalWeapon.damage }} {{ abilityScoreModifier(monster.strength) }}</span>
+                                        <span>{{ additionalWeapon.properties ? additionalWeapon.properties.join(', ') : additionalWeapon.properties }}</span>
+                                        <a @click="removeAttribute(monster.id, additionalWeapon.name, 'Weapon')">
+                                            <i class="fas fa-minus-square"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="additionalSpell in monster.additionalSpell">
+                                        <router-link :title="additionalSpell.text" :to="'spells?query='+ additionalSpell.name">{{ additionalSpell.name }}</router-link>
+                                        <a @click="removeAttribute(monster.id, additionalSpell.name, 'Spell')">
+                                            <i class="fas fa-minus-square"></i>
+                                        </a>
+                                    </li>
+                                </td>
+                                <td>
+                                    {{ (monster.traits || []).join(', ') }}
+                                    <div>
+                                        <textarea v-model="monster.comment" id="" cols="30" rows="10"></textarea>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a @click="toggleInfo(monster)">info</a>
+                                    <a @click="cloneMonster(monster)">clone</a>
+                                    <a @click="copyMonster(monster)">copy</a>
+                                    <a @click="openModalHandler(monster.id)">
+                                        weapon
+                                    </a>
+                                    <div>CR: {{ monster.challenge_rating }}</div>
+                                    <div>Exp: {{ monster.challenge_rating * 100 }}</div>
+                                    <div>Hit Dice: {{ monster.hit_dice }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+              </div>
+            </div>
 
             <h2 class="is-size-5">Saved Encounters</h2>
             <div v-for="encoun in savedEncounters">
                 <a @click="loadEncounter(encoun.name)">{{ encoun.name }}</a>
-
             </div>
         </main>
     `;
@@ -198,7 +210,12 @@ const template = `
 const encounter = {
     computed: {
         encounter() {
-            return this.$store.state.encounter;
+            const enc = this.$store.state.encounter;
+            return Object.keys(enc).map(singleKey => {
+                return enc[singleKey];
+            }).sort((a, b) => {
+                return a.sortOrder - b.sortOrder;
+            });
         },
         savedEncounters() {
             return this.$store.state.savedEncounters;
@@ -217,11 +234,31 @@ const encounter = {
         },
         party() {
             return this.$store.state.party;
+        },
+        sideBarClass() {
+            return `column ${ this.isSidebarActive ? 'is-three-quarters' : 'is-full'}`;
+        },
+        encounterExperience() {
+            return Object.keys(this.encounter).reduce((newSum, singleMonsterKey) => {
+                return newSum += (this.encounter[singleMonsterKey].challenge_rating * 100);
+            }, 0);
+        },
+        encounterRating() {
+            const enc = this.encounter;
+            return Math.max(...Object.keys(enc).reduce((newSum, singleMonsterKey) => {
+                return newSum.concat([enc[singleMonsterKey] ? enc[singleMonsterKey].challenge_rating : 0]);
+            }, []));
         }
     },
-    mounted() {},
+    mounted() {
+        // TODO: remove
+        this.loadEncounter('Sample');
+    },
     methods: {
         abilityScoreModifier,
+        generateHitPoints(monster) {
+            monster.hit_points = chance.rpg(monster.hit_dice, {sum: true});
+        },
         importFile(event) {
             const file = event.target.files[0];
             const fr = new FileReader();
@@ -249,6 +286,9 @@ const encounter = {
                     name: this.name
                 });
             }
+        },
+        sideBarToggle() {
+            this.isSidebarActive = !this.isSidebarActive;
         },
         removeEncounter() {
             if (window.confirm('Are you sure?')) {
@@ -336,6 +376,18 @@ const encounter = {
                     monster: {}
                 });
             }, 40);
+        },
+        monsterMoveUp(monsterKey) {
+            this.$store.commit('sortMonster', {
+                monsterId: monsterKey,
+                direction: 'up'
+            });
+        },
+        monsterMoveDown(monsterKey) {
+            this.$store.commit('sortMonster', {
+                monsterId: monsterKey,
+                direction: 'down'
+            });
         }
     },
     data() {
@@ -343,7 +395,8 @@ const encounter = {
             additionalWeapon: null,
             additionalSpell: null,
             name: '',
-            tempEncounter: ''
+            tempEncounter: '',
+            isSidebarActive: false
         };
     },
     template

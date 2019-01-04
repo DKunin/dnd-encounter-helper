@@ -5,6 +5,7 @@ import {
     spellsData,
     spellsLevels
 } from '../data/spells.js';
+import traits from '../data/traits.js';
 import weaponsData from '../data/weapons.js';
 
 // Pages
@@ -15,6 +16,7 @@ import weapons from './weapons.js';
 import encounterTable from './encounter-table.js';
 import misc from './misc.js';
 import music from './music.js';
+import map from './map.js';
 
 const routes = [
     { path: '/', redirect: '/encounter' },
@@ -24,7 +26,8 @@ const routes = [
     { path: '/weapons', component: weapons },
     { path: '/encounter', component: encounterTable },
     { path: '/misc', component: misc },
-    { path: '/music', component: music }
+    { path: '/music', component: music },
+    { path: '/map', component: map }
 ];
 
 const router = new VueRouter({ routes });
@@ -75,10 +78,15 @@ const store = new Vuex.Store({
                 'md5',
                 monster.name + new Date().getTime()
             );
+            const len = Object.keys(state.encounter).length;
             Vue.set(
                 state.encounter,
                 md5hash,
-                Object.assign({ id: md5hash }, monster)
+                Object.assign(Object.assign(Object.assign({ id: md5hash }, monster), {
+                    traits: chance.pickset(traits.traits, chance.integer({ min: 1, max: 3 }))
+                }), {
+                    sortOrder: len
+                })
             );
         },
         addToClipboard(state, monster) {
@@ -132,6 +140,16 @@ const store = new Vuex.Store({
                 return singleWeapon.name != weaponName;
             });
             Vue.set(state.encounter, monsterId, singleMonster);
+        },
+        setMonsterPosition(
+            state,
+            { id, x, y }
+        ) {
+            let singleMonster = state.encounter[id];
+
+            singleMonster.x = x;
+            singleMonster.y = y;
+            Vue.set(state.encounter, id, singleMonster);
         },
         removeFromEncounter(state, monsterId) {
             state.encounter = Object.keys(
@@ -203,6 +221,22 @@ const store = new Vuex.Store({
                 modalState: newState.modalState,
                 monster: newState.monster
             };
+        },
+        sortMonster(state, opts) {
+            const encKeys = Object.keys(state.encounter);
+            let enc = encKeys.map((singleKey) => state.encounter[singleKey]);
+
+            enc = enc.reduce((newEnc, singleMonster) => {
+                if (singleMonster.id === opts.monsterId && opts.direction === 'up') {
+                    singleMonster.sortOrder = singleMonster.sortOrder - 1;
+                } else if (singleMonster.id === opts.monsterId && opts.direction === 'down') {
+                    singleMonster.sortOrder = singleMonster.sortOrder + 1;
+                }
+                newEnc[singleMonster.id] = singleMonster;
+                return newEnc;
+            }, {});
+
+            state.encounter = enc;
         }
     }
 });
@@ -232,6 +266,9 @@ const template = `
                     </li>
                     <li>
                         <router-link to="/misc">Misc</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/map">Map</router-link>
                     </li>
                 </ul>
             </div>

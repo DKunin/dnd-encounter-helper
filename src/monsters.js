@@ -1,5 +1,5 @@
 const template = `
-        <main class="section">
+        <div>
             <nav class="level">
               <div class="level-left">
                 <div class="level-item">
@@ -12,7 +12,7 @@ const template = `
                     <p class="control">
                       <input v-model="filter" class="input" type="text">
                     </p>
-                    <a class="button" @click="search">search</a>
+                    <a v-if="false" class="button" @click="search">search</a>
                   </div>
                 </div>
               </div>
@@ -41,7 +41,7 @@ const template = `
                 </a>
               </div>
             </article>
-        </main>
+        </div>
     `;
 
 const monsters = {

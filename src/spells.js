@@ -72,7 +72,7 @@ const spells = {
             filter: null,
             setFilter: null,
             casterClass: null,
-            showFull: false
+            showFull: true
         };
     },
     computed: {
@@ -80,21 +80,20 @@ const spells = {
             const filter = this.filter || '';
             const level = this.level;
             const casterClass = this.casterClass;
-            const showFull = this.showFull;
             return this.$store.state.spellsData.filter(singleSpell => {
                 if (!level) {
                     return true;
                 }
                 return singleSpell.level === parseInt(level);
             }).filter(singleSpell => {
-                return (filter ? singleSpell.name.toLowerCase().includes(filter.toLowerCase()) : true)
+                return (filter ? singleSpell.name.toLowerCase().includes(filter.toLowerCase()) : true);
             }).filter(singleSpell => {
                 if (!casterClass) {
                     return true;
                 }
                 return (singleSpell.classes || []).some(singleItem => {
                     return casterClass.includes(singleItem);
-                })
+                });
             });
         },
         casterClasses() {
@@ -105,12 +104,13 @@ const spells = {
         }
     },
     template,
-    methods: {
-        search: function() {
-            this.setFilter = this.filter
+    mounted() {
+        if (this.$route.query && this.$route.query.query) {
+            this.filter = this.$route.query.query;
+        } else {
+            this.filter = '';
         }
-    },
-    mounted() {}
+    }
 };
 
 export default spells;
