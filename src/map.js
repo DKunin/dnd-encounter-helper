@@ -47,6 +47,7 @@ const party = {
             function createMonster(monster) {
                 const x = monster.x || monster.sortOrder * 30 + 20;
                 const y = monster.y || monster.sortOrder * 30 + 20;
+
                 var group = new Konva.Group({
                     x,
                     y,
@@ -56,33 +57,49 @@ const party = {
                 var shape = new Konva.Circle({
                     width: 30,
                     height: 30,
-                    fill: 'gray',
+                    fill: 'red',
                     name: 'fillShape'
                 });
                 var boundingBox = shape.getClientRect({ relativeTo: group });
 
+                var nameAvatar = new Konva.Text({
+                    x: boundingBox.x + 8,
+                    y: boundingBox.y + 10,
+                    fill: 'white',
+                    text: monster.name.split(' ').reduce((newLine, word) => {
+                        return newLine += word.slice(0, 1);
+                    }, '')
+                });
+
                 var mainText = new Konva.Text({
                     x: boundingBox.x + 40,
                     y: boundingBox.y,
-                    text: `${monster.sortOrder} ${monster.name}`
+                    text:
+                        `${monster.sortOrder} ${monster.name}\n` +
+                        `ac:${monster.armor_class} / hp: ${
+                            monster.hit_points
+                        }\n` +
+                        (monster.traits || []).join(',') +
+                        '\n' +
+                        monster.actions.reduce((newString, action) => {
+                            return (
+                                newString +
+                                `${action.name} hit: +${
+                                    action.attack_bonus
+                                }  dmg: ${action.damage_dice}${
+                                    action.damage_bonus
+                                        ? '+' + action.damage_bonus
+                                        : ''
+                                }\n`
+                            );
+                        }, '')
                 });
-                var secondaryText = new Konva.Text({
-                    x: boundingBox.x + 40,
-                    y: boundingBox.y + 15,
-                    text: `ac:${monster.armor_class} / hp: ${
-                        monster.hit_points
-                    }`
-                });
-                var traitText = new Konva.Text({
-                    x: boundingBox.x + 40,
-                    y: boundingBox.y + 30,
-                    text: (monster.traits || []).join(',')
-                });
+
                 group.id = monster.id;
                 group.add(shape);
                 group.add(mainText);
-                group.add(secondaryText);
-                group.add(traitText);
+                group.add(nameAvatar);
+
 
                 return group;
             }
