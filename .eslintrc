@@ -139,6 +139,7 @@
     },
     "globals": {
         "Vue": true,
+        "starx": true,
         "chance": true,
         "Konva": true,
         "cryptofoo": true,

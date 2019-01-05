@@ -17,6 +17,7 @@ import encounterTable from './encounter-table.js';
 import misc from './misc.js';
 import music from './music.js';
 import map from './map.js';
+import names from './names.js';
 
 const routes = [
     { path: '/', redirect: '/encounter' },
@@ -27,7 +28,8 @@ const routes = [
     { path: '/encounter', component: encounterTable },
     { path: '/misc', component: misc },
     { path: '/music', component: music },
-    { path: '/map', component: map }
+    { path: '/map', component: map },
+    { path: '/names', component: names }
 ];
 
 const router = new VueRouter({ routes });
@@ -269,6 +271,9 @@ const template = `
                     </li>
                     <li>
                         <router-link to="/map">Map</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/names">Names</router-link>
                     </li>
                 </ul>
             </div>

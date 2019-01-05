@@ -192,6 +192,9 @@ const template = `
                                     <div>CR: {{ monster.challenge_rating }}</div>
                                     <div>Exp: {{ monster.challenge_rating * 100 }}</div>
                                     <div>Hit Dice: {{ monster.hit_dice }}</div>
+                                    <div>PartyMember: <input type="checkbox" id="checkbox" v-model="monster.isPartyMember"></div>
+                                    <div>CurrentlyVisible: <input type="checkbox" id="checkbox" v-model="monster.currentlyVisible"></div>
+
                                 </td>
                             </tr>
                         </tbody>
