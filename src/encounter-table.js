@@ -116,12 +116,18 @@ const template = `
               </div>
             </nav>
             
+            <div>
+                <h4>Settings</h4>
+                <span v-for="(setting, key) in settings">
+                    {{ key }}: <input v-model="settings[key]" class="input" type="text">
+                </span>
+            </div>
+
             <div class="columns">
               <div class="column" v-if="isSidebarActive">
                 <monstersTable></monstersTable>
               </div>
 
-              </div>
               <div :class="sideBarClass">
                     <table class="table is-bordered">
                         <thead>
@@ -199,7 +205,6 @@ const template = `
                             </tr>
                         </tbody>
                     </table>
-                    
               </div>
             </div>
 
@@ -213,7 +218,7 @@ const template = `
 const encounter = {
     computed: {
         encounter() {
-            const enc = this.$store.state.encounter;
+            const enc = this.$store.state.encounter.monsters;
             return Object.keys(enc).map(singleKey => {
                 return enc[singleKey];
             }).sort((a, b) => {
@@ -222,6 +227,9 @@ const encounter = {
         },
         savedEncounters() {
             return this.$store.state.savedEncounters;
+        },
+        settings() {
+            return this.$store.state.encounter.settings;
         },
         openedAdditionalModal() {
             return this.$store.state.additionalModal;
@@ -255,7 +263,7 @@ const encounter = {
     },
     mounted() {
         // TODO: remove
-        this.loadEncounter('Sample');
+        // this.loadEncounter('Sample');
     },
     methods: {
         abilityScoreModifier,

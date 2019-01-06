@@ -19776,7 +19776,31 @@ const monsters = [
 ];
 
 export default monsters;
-
+export const genericMonster = {
+    name: 'Generic Monster',
+    size: '',
+    type: '',
+    subtype: 'any race',
+    alignment: 'any',
+    armor_class: 11,
+    hit_points: 10,
+    hit_dice: '2d8',
+    speed: '30 ft.',
+    strength: 10,
+    dexterity: 10,
+    constitution: 10,
+    intelligence: 10,
+    wisdom: 10,
+    charisma: 10,
+    damage_vulnerabilities: '',
+    damage_resistances: '',
+    damage_immunities: '',
+    condition_immunities: '',
+    senses: 'passive Perception 10',
+    languages: 'any one language (usually Common)',
+    challenge_rating: 0.25,
+    actions: []
+};
 /*
   "License":
   "OPEN GAME LICENSE Version 1.0a",

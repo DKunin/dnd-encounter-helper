@@ -1,5 +1,6 @@
 // Data
-import monstersData from '../data/monsters.js';
+import monstersData, { genericMonster } from '../data/monsters.js';
+
 import {
     spellCasterClasses,
     spellsData,
@@ -69,7 +70,12 @@ const store = new Vuex.Store({
         weaponsData,
         additionalModal: { modalState: false },
         monsterModal: { modalState: false, monster: {} },
-        encounter: {},
+        encounter: {
+            settings: {
+                mapImage: null
+            },
+            monsters: {}
+        },
         tempClipboard: {},
         savedEncounters:
             JSON.parse(localStorage.getItem('savedEncounter')) || {}
@@ -80,13 +86,39 @@ const store = new Vuex.Store({
                 'md5',
                 monster.name + new Date().getTime()
             );
-            const len = Object.keys(state.encounter).length;
+            const len = Object.keys(state.encounter.monsters).length;
             Vue.set(
-                state.encounter,
+                state.encounter.monsters,
                 md5hash,
-                Object.assign(Object.assign(Object.assign({ id: md5hash }, monster), {
-                    traits: chance.pickset(traits.traits, chance.integer({ min: 1, max: 3 }))
-                }), {
+                Object.assign(
+                    { id: md5hash },
+                    monster,
+                    {
+                        traits: chance.pickset(
+                            traits.traits,
+                            chance.integer({ min: 1, max: 3 })
+                        )
+                    },
+                    {
+                        sortOrder: len
+                    }
+                )
+            );
+        },
+        addPartyMemberToEncounter(state, partyMember) {
+            const monster = Object.assign({}, genericMonster, partyMember, {
+                currentlyVisible: true,
+                isPartyMember: true
+            });
+            var md5hash = cryptofoo.hash(
+                'md5',
+                monster.name + new Date().getTime()
+            );
+            const len = Object.keys(state.encounter.monsters).length;
+            Vue.set(
+                state.encounter.monsters,
+                md5hash,
+                Object.assign({ id: md5hash }, monster, {
                     sortOrder: len
                 })
             );
@@ -101,7 +133,7 @@ const store = new Vuex.Store({
             );
 
             Vue.set(
-                state.encounter,
+                state.encounter.monsters,
                 md5hash,
                 Object.assign({ id: md5hash }, state.tempClipboard)
             );
@@ -110,7 +142,7 @@ const store = new Vuex.Store({
             state,
             { monsterId, additionalWeapon, additionalSpell }
         ) {
-            let singleMonster = state.encounter[monsterId];
+            let singleMonster = state.encounter.monsters[monsterId];
 
             singleMonster.additionalWeapon =
                 singleMonster.additionalWeapon &&
@@ -128,58 +160,58 @@ const store = new Vuex.Store({
                     ? singleMonster.additionalSpell.concat(additionalSpell)
                     : additionalSpell;
 
-            Vue.set(state.encounter, monsterId, singleMonster);
+            Vue.set(state.encounter.monsters, monsterId, singleMonster);
         },
         removeWeaponFromMonster(
             state,
             { monsterId, weaponName, attributeName }
         ) {
-            let singleMonster = state.encounter[monsterId];
+            let singleMonster = state.encounter.monsters[monsterId];
 
             singleMonster['additional' + attributeName] = singleMonster[
                 'additional' + attributeName
             ].filter(singleWeapon => {
                 return singleWeapon.name != weaponName;
             });
-            Vue.set(state.encounter, monsterId, singleMonster);
+            Vue.set(state.encounter.monsters, monsterId, singleMonster);
         },
-        setMonsterPosition(
-            state,
-            { id, x, y }
-        ) {
-            let singleMonster = state.encounter[id];
+        setMonsterPosition(state, { id, x, y }) {
+            let singleMonster = state.encounter.monsters[id];
 
             singleMonster.x = x;
             singleMonster.y = y;
-            Vue.set(state.encounter, id, singleMonster);
+            Vue.set(state.encounter.monsters, id, singleMonster);
         },
         removeFromEncounter(state, monsterId) {
-            state.encounter = Object.keys(
-                state.encounter
-            ).reduce((newObj, singleMonsterKey) => {
-                if (singleMonsterKey === monsterId) {
+            state.encounter.monsters = Object.keys(state.encounter.monsters).reduce(
+                (newObj, singleMonsterKey) => {
+                    if (singleMonsterKey === monsterId) {
+                        return newObj;
+                    }
+                    newObj[singleMonsterKey] =
+                        state.encounter.monsters[singleMonsterKey];
                     return newObj;
-                }
-                newObj[singleMonsterKey] = state.encounter[singleMonsterKey];
-                return newObj;
-            }, {});
+                },
+                {}
+            );
         },
         saveEncounter(state, encounter) {
             state.savedEncounters[encounter.name] = encounter;
         },
         removeEncounter(state, name) {
-            const savedEncounters = Object.keys(
-                state.savedEncounters
-            ).reduce((newObj, singleKey) => {
-                if (singleKey === name) {
-                    return newObj;
-                }
+            const savedEncounters = Object.keys(state.savedEncounters).reduce(
+                (newObj, singleKey) => {
+                    if (singleKey === name) {
+                        return newObj;
+                    }
 
-                newObj = Object.assign({}, newObj, {
-                    [singleKey]: state.savedEncounters[singleKey]
-                });
-                return newObj;
-            }, {});
+                    newObj = Object.assign({}, newObj, {
+                        [singleKey]: state.savedEncounters[singleKey]
+                    });
+                    return newObj;
+                },
+                {}
+            );
             state.savedEncounters = savedEncounters;
         },
         loadEncounter(state, name) {
@@ -189,7 +221,10 @@ const store = new Vuex.Store({
             state.encounter = JSON.parse(encounterData);
         },
         clearEncounter(state) {
-            state.encounter = {};
+            state.encounter = {
+                settings: {},
+                monsters: {}
+            };
         },
         addToParty(state, partyMember) {
             var md5hash =
@@ -225,20 +260,29 @@ const store = new Vuex.Store({
             };
         },
         sortMonster(state, opts) {
-            const encKeys = Object.keys(state.encounter);
-            let enc = encKeys.map((singleKey) => state.encounter[singleKey]);
+            const encKeys = Object.keys(state.encounter.monsters);
+            let enc = encKeys.map(singleKey => state.encounter.monsters[singleKey]);
 
             enc = enc.reduce((newEnc, singleMonster) => {
-                if (singleMonster.id === opts.monsterId && opts.direction === 'up') {
+                if (
+                    singleMonster.id === opts.monsterId &&
+                    opts.direction === 'up'
+                ) {
                     singleMonster.sortOrder = singleMonster.sortOrder - 1;
-                } else if (singleMonster.id === opts.monsterId && opts.direction === 'down') {
+                } else if (
+                    singleMonster.id === opts.monsterId &&
+                    opts.direction === 'down'
+                ) {
                     singleMonster.sortOrder = singleMonster.sortOrder + 1;
                 }
                 newEnc[singleMonster.id] = singleMonster;
                 return newEnc;
             }, {});
 
-            state.encounter = enc;
+            state.encounter.monsters = enc;
+        },
+        toggleMonsterVisibility(state, opts) {
+            state.encounter.monsters[opts.id].currentlyVisible =  !state.encounter.monsters[opts.id].currentlyVisible;
         }
     }
 });

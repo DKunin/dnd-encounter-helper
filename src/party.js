@@ -4,6 +4,7 @@ const template = `
             <ul>
                 <li v-for="member in party">
                     <a @click="editMember(member)">{{ member.name }}</a> 
+                    <a @click="addPartyMemberToEncounter(member)">add to encounter</a>
                     <a @click="removeMember(member.partyMemberId)">remove</a>
                 </li>
             </ul>
@@ -89,6 +90,9 @@ const party = {
         },
         removeMember(partyMemberId) {
             this.$store.commit('removeFromParty', partyMemberId);
+        },
+        addPartyMemberToEncounter(partyMemeber) {
+            this.$store.commit('addPartyMemberToEncounter', partyMemeber);
         },
         newPartyMember() {
             ['name', 'partyMemberId', 'initiative', 'ac', 'hp', 'misc'].forEach(
