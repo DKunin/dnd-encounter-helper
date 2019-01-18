@@ -15,6 +15,7 @@ function createMonster(monster, store) {
     var group = new Konva.Group({
         x,
         y,
+        monster: monster,
         draggable: true
     });
 
@@ -138,12 +139,11 @@ const party = {
 
             layer.on('dragend', function(e) {
                 var target = e.target;
-
                 starx.notify('room.message', {
                     id: target.id,
                     x: String(target.attrs.x),
                     y: String(target.attrs.y),
-                    isCurrentlyVisible: String(target.monster.isCurrentlyVisible)
+                    isCurrentlyVisible: String(target.attrs.monster.currentlyVisible)
                 });
                 setTimeout(() => {
                     store.commit('saveEncounter', {
