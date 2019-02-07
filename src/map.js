@@ -18,10 +18,15 @@ function createMonster(monster, store) {
         monster: monster,
         draggable: true
     });
+    let size = 30;
+
+    if (monster.comment && monster.comment.includes('LARGE')) {
+        size = size * 3;
+    }
 
     var shape = new Konva.Circle({
-        width: 30,
-        height: 30,
+        width: size,
+        height: size,
         fill: monster.isPartyMember ? 'green' : 'red',
         name: 'fillShape'
     });
@@ -87,7 +92,7 @@ function createMonster(monster, store) {
 const party = {
     data() {
         return {
-            name: '',
+            name: this.$route.query.name,
             layer: null
         };
     },
@@ -103,6 +108,7 @@ const party = {
     methods: {
         loadEncounter(name) {
             this.name = name;
+            this.$route.query.name = name;
             this.initMap();
         },
         drawMap() {
@@ -214,7 +220,7 @@ const party = {
         }
     },
     mounted() {
-        if (this.name) {
+        if (this.name || this.$route.query.name) {
             this.initMap();
         }
     }
