@@ -37,7 +37,8 @@ const template = `
               <figure class="media-left">
                 <p class="image is-64x64">
                   Level: {{ spell.level }} <br>
-                  Time: {{ spell.time }}
+                  Time: {{ spell.time }} <br>
+                  <div v-if="spell.ritual">Ritual</div>
                 </p>
               </figure>
               <div class="media-content">
