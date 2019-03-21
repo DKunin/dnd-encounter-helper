@@ -48,6 +48,17 @@ const encounterPersist = store => {
         }
     });
 };
+
+const generatorPersist = store => {
+    store.subscribe((mutation, state) => {
+        if (
+            mutation.type === 'nameGenerated'
+        ) {
+            localStorage.setItem('saveGeneratedLog', JSON.stringify(state.generatedLog));
+        }
+    });
+};
+
 const partyPersist = store => {
     store.subscribe((mutation, state) => {
         if (
@@ -60,13 +71,14 @@ const partyPersist = store => {
 };
 
 const store = new Vuex.Store({
-    plugins: [encounterPersist, partyPersist],
+    plugins: [encounterPersist, partyPersist, generatorPersist],
     state: {
         party: JSON.parse(localStorage.getItem('savedParty')) || [],
         monstersData,
         spellsData,
         spellsLevels,
         spellCasterClasses,
+        generatedLog: JSON.parse(localStorage.getItem('saveGeneratedLog')) || [],
         weaponsData,
         additionalModal: { modalState: false },
         monsterModal: { modalState: false, monster: {} },
@@ -283,11 +295,15 @@ const store = new Vuex.Store({
         },
         toggleMonsterVisibility(state, opts) {
             state.encounter.monsters[opts.id].currentlyVisible =  !state.encounter.monsters[opts.id].currentlyVisible;
+        },
+        nameGenerated(state, newValue) {
+            state.generatedLog = state.generatedLog.concat([ newValue ]);
         }
     }
 });
 
 const template = `
+    <div>
     <main>
         <div class="container main-container">
             <div class="tabs">
@@ -323,7 +339,8 @@ const template = `
             </div>
             <router-view />
         </div>
-        <footer class="footer">
+    </main>
+    <footer class="footer">
             <div class="container">
                 <div class="content has-text-centered">
                     <p>
@@ -332,7 +349,7 @@ const template = `
                 </div>
             </div>
         </footer>
-    </main>
+     </div>
 `;
 
 const app = {
