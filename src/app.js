@@ -35,6 +35,17 @@ const routes = [
 
 const router = new VueRouter({ routes });
 
+const serverPersist = function(path, data) {
+    return fetch('/json?path=' + path, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data })
+    });
+};
+
 const encounterPersist = store => {
     store.subscribe((mutation, state) => {
         if (
@@ -45,16 +56,20 @@ const encounterPersist = store => {
                 'savedEncounter',
                 JSON.stringify(state.savedEncounters)
             );
+
+            serverPersist('savedEncounters', state.savedEncounters);
         }
     });
 };
 
 const generatorPersist = store => {
     store.subscribe((mutation, state) => {
-        if (
-            mutation.type === 'nameGenerated'
-        ) {
-            localStorage.setItem('saveGeneratedLog', JSON.stringify(state.generatedLog));
+        if (mutation.type === 'nameGenerated') {
+            localStorage.setItem(
+                'saveGeneratedLog',
+                JSON.stringify(state.generatedLog)
+            );
+            serverPersist('saveGeneratedLog', state.generatedLog);
         }
     });
 };
@@ -66,6 +81,7 @@ const partyPersist = store => {
             mutation.type === 'removeFromParty'
         ) {
             localStorage.setItem('savedParty', JSON.stringify(state.party));
+            serverPersist('savedParty', state.party);
         }
     });
 };
@@ -78,7 +94,8 @@ const store = new Vuex.Store({
         spellsData,
         spellsLevels,
         spellCasterClasses,
-        generatedLog: JSON.parse(localStorage.getItem('saveGeneratedLog')) || [],
+        generatedLog:
+            JSON.parse(localStorage.getItem('saveGeneratedLog')) || [],
         weaponsData,
         additionalModal: { modalState: false },
         monsterModal: { modalState: false, monster: {} },
@@ -195,17 +212,25 @@ const store = new Vuex.Store({
             Vue.set(state.encounter.monsters, id, singleMonster);
         },
         removeFromEncounter(state, monsterId) {
-            state.encounter.monsters = Object.keys(state.encounter.monsters).reduce(
-                (newObj, singleMonsterKey) => {
-                    if (singleMonsterKey === monsterId) {
-                        return newObj;
-                    }
-                    newObj[singleMonsterKey] =
-                        state.encounter.monsters[singleMonsterKey];
+            state.encounter.monsters = Object.keys(
+                state.encounter.monsters
+            ).reduce((newObj, singleMonsterKey) => {
+                if (singleMonsterKey === monsterId) {
                     return newObj;
-                },
-                {}
-            );
+                }
+                newObj[singleMonsterKey] =
+                    state.encounter.monsters[singleMonsterKey];
+                return newObj;
+            }, {});
+        },
+        setParty(state, newData) {
+            state.party = newData;
+        },
+        setGeneratedLog(state, newData) {
+            state.generatedLog = newData;
+        },
+        setEncounters(state, encounters) {
+            state.savedEncounters = encounters;
         },
         saveEncounter(state, encounter) {
             state.savedEncounters[encounter.name] = encounter;
@@ -273,7 +298,9 @@ const store = new Vuex.Store({
         },
         sortMonster(state, opts) {
             const encKeys = Object.keys(state.encounter.monsters);
-            let enc = encKeys.map(singleKey => state.encounter.monsters[singleKey]);
+            let enc = encKeys.map(
+                singleKey => state.encounter.monsters[singleKey]
+            );
 
             enc = enc.reduce((newEnc, singleMonster) => {
                 if (
@@ -294,10 +321,11 @@ const store = new Vuex.Store({
             state.encounter.monsters = enc;
         },
         toggleMonsterVisibility(state, opts) {
-            state.encounter.monsters[opts.id].currentlyVisible =  !state.encounter.monsters[opts.id].currentlyVisible;
+            state.encounter.monsters[opts.id].currentlyVisible = !state
+                .encounter.monsters[opts.id].currentlyVisible;
         },
         nameGenerated(state, newValue) {
-            state.generatedLog = state.generatedLog.concat([ newValue ]);
+            state.generatedLog = state.generatedLog.concat([newValue]);
         }
     }
 });
@@ -360,6 +388,26 @@ const app = {
     name: 'app',
     data() {
         return {};
+    },
+    mounted() {
+        fetch('/json?path=savedEncounter')
+            .then(res => res.json())
+            .then(result => {
+                this.$store.commit('setEncounters', result.data || {});
+            });
+
+        fetch('/json?path=saveGeneratedLog')
+            .then(res => res.json())
+            .then(result => {
+
+                this.$store.commit('setGeneratedLog', result.data || []);
+            });
+
+        fetch('/json?path=savedParty')
+            .then(res => res.json())
+            .then(result => {
+                this.$store.commit('setParty', result.data || []);
+            });
     }
 };
 
