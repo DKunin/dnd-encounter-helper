@@ -210,7 +210,7 @@ const template = `
 
             <h2 class="is-size-5">Saved Encounters</h2>
             <div v-for="encoun in savedEncounters">
-                <a @click="loadEncounter(encoun.name)">{{ encoun.name }}</a>
+                <a @click="loadEncounter(encoun)">{{ encoun }}</a>
             </div>
         </main>
     `;
@@ -226,7 +226,7 @@ const encounter = {
             });
         },
         savedEncounters() {
-            return this.$store.state.savedEncounters;
+            return Object.keys(this.$store.state.savedEncounters || {}) || [];
         },
         settings() {
             return this.$store.state.encounter.settings;
@@ -312,6 +312,7 @@ const encounter = {
             }
         },
         loadEncounter(name) {
+            if (!name) return null;
             this.name = name;
             this.$store.commit('loadEncounter', name);
         },
