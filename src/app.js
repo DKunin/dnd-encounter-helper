@@ -390,7 +390,7 @@ const app = {
         return {};
     },
     mounted() {
-        fetch('/json?path=savedEncounter')
+        fetch('/json?path=savedEncounters')
             .then(res => res.json())
             .then(result => {
                 this.$store.commit('setEncounters', result.data || {});
