@@ -19772,6 +19772,91 @@ const monsters = [
                 damage_bonus: 1
             }
         ]
+    },
+    {
+        name: 'FlameBearer Fighter',
+        size: 'Medium',
+        type: 'humanoid',
+        subtype: 'any race',
+        alignment: 'LG',
+        armor_class: 13,
+        hit_points: 20,
+        hit_dice: '5d8',
+        speed: '30 ft.',
+        strength: 14,
+        dexterity: 12,
+        constitution: 15,
+        intelligence: 12,
+        wisdom: 10,
+        charisma: 10,
+        medicine: 4,
+        religion: 10,
+        damage_vulnerabilities: '',
+        damage_resistances: '',
+        damage_immunities: '',
+        condition_immunities: 'Charmed',
+        senses: 'passive Perception 12',
+        languages: 'Common, Celestial',
+        challenge_rating: 1,
+        special_abilities: [
+            {
+                name: 'KnockerOuter',
+                desc: 'Whenever FlameBearer Fighter manages to hit the head of the oponent, he must succeed DC 8 Saving throw, or become unconsious',
+                attack_bonus: 0
+            }
+        ],
+        actions: [
+            {
+                name: 'Any bludgeoning weapon',
+                desc:
+                    'Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 1d8 bludgeoning damage.',
+                attack_bonus: 2,
+                damage_dice: '1d8'
+            }
+        ]
+    },
+    {
+        name: 'FlameBearer Cleric',
+        size: 'Medium',
+        type: 'humanoid',
+        subtype: 'any race',
+        alignment: 'LG',
+        armor_class: 11,
+        hit_points: 20,
+        hit_dice: '5d8',
+        speed: '30 ft.',
+        strength: 10,
+        dexterity: 13,
+        constitution: 12,
+        intelligence: 13,
+        wisdom: 15,
+        charisma: 10,
+        medicine: 4,
+        religion: 10,
+        damage_vulnerabilities: '',
+        damage_resistances: '',
+        damage_immunities: '',
+        condition_immunities: 'Charmed',
+        senses: 'passive Perception 12',
+        languages: 'Common, Celestial',
+        challenge_rating: 1,
+        special_abilities: [
+            {
+                name: 'Spellcasting',
+                desc:
+                    'The FlameBearer Cleric is a 5st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). The FlameBearer Cleric has following cleric spells prepared:\n\n• Cantrips (at will): light, sacred flame, thaumaturgy\n• 1st level (3 slots): bless, cure wounds, sanctuary, Command, Sleep, 2nd level:Hold Person, Silence, Suggestion, 3d level: Crusader\'s Mantle , 4th level: Grasping Vine, 7th level: Divine Word ',
+                attack_bonus: 0
+            }
+        ],
+        actions: [
+            {
+                name: 'Any bludgeoning weapon',
+                desc:
+                    'Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 1d8 bludgeoning damage.',
+                attack_bonus: 2,
+                damage_dice: '1d8'
+            }
+        ]
     }
 ];
 
