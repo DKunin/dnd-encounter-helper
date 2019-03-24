@@ -18,6 +18,7 @@ function createMonster(monster, store) {
         monster: monster,
         draggable: true
     });
+
     let size = 30;
 
     if (monster.comment && monster.comment.includes('LARGE')) {
@@ -204,7 +205,7 @@ const party = {
             };
 
             starx.init(
-                { host: '127.0.0.1', port: 3250, path: '/nano' },
+                { host: document.location.host.split(':')[0], port: 3250, path: '/nano' },
                 function() {
                     const mapUrl = enc.settings.mapImage;
                     starx.request(
