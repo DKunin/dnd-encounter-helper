@@ -324,6 +324,9 @@ const store = new Vuex.Store({
             state.encounter.monsters[opts.id].currentlyVisible = !state
                 .encounter.monsters[opts.id].currentlyVisible;
         },
+        changeMonsterHealth(state, opts) {
+            state.encounter.monsters[opts.id].currentlyVisible = opts.hp;
+        },
         nameGenerated(state, newValue) {
             state.generatedLog = state.generatedLog.concat([newValue]);
         }
@@ -331,8 +334,7 @@ const store = new Vuex.Store({
 });
 
 const template = `
-    <div>
-    <main>
+    <section>
         <div class="container main-container">
             <div class="tabs">
                 <ul>
@@ -352,9 +354,6 @@ const template = `
                         <router-link to="/party">Party</router-link>
                     </li>
                     <li>
-                        <router-link to="/music">Music</router-link>
-                    </li>
-                    <li>
                         <router-link to="/misc">Misc</router-link>
                     </li>
                     <li>
@@ -367,17 +366,7 @@ const template = `
             </div>
             <router-view />
         </div>
-    </main>
-    <footer class="footer">
-            <div class="container">
-                <div class="content has-text-centered">
-                    <p>
-                        What do they see, what do they hear, what do they smell, how do they feel, what enemies look like
-                    </p>
-                </div>
-            </div>
-        </footer>
-     </div>
+    </section>
 `;
 
 const app = {

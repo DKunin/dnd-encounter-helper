@@ -1,8 +1,7 @@
 import abilityScoreModifier from './abilityScoreModifier.js';
 
 const template = `
-        <main class="section">
-            
+        <div>
             <div :class="{ 'modal': true, 'is-active': openedAdditionalModal.modalState }">
               <div class="modal-background"></div>
               <div class="modal-content">
@@ -30,106 +29,107 @@ const template = `
             </div>
 
             <div :class="{ 'modal': true, 'is-active': monsterModal.modalState }">
-              <div class="modal-background"></div>
-              <div class="modal-content">
-                <div class="box">
-                      <div class="content">
-                        {{ monsterModal.monster.name }}
-                        <button @click="removeMonster(monsterModal.monster)">Remove</button>
-                        <div class="columns">
-                            <ul class="column">
-                                <li>str: {{ monsterModal.monster.strength }} ({{ abilityScoreModifier(monsterModal.monster.strength) }})</li>
-                                <li>dex: {{ monsterModal.monster.dexterity }} ({{ abilityScoreModifier(monsterModal.monster.dexterity) }})</li>
-                                <li>con: {{ monsterModal.monster.constitution }} ({{ abilityScoreModifier(monsterModal.monster.constitution) }})</li>
-                                <li>int: {{ monsterModal.monster.intelligence }} ({{ abilityScoreModifier(monsterModal.monster.intelligence) }})</li>
-                                <li>wis: {{ monsterModal.monster.wisdom }} ({{ abilityScoreModifier(monsterModal.monster.wisdom) }})</li>
-                                <li>cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})</li>
-                                <li>
-                                    cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})
-                                </li>
-                            </ul>
-                            <ul class="column">
-                                <oline>damage_vulnerabilities: {{ monsterModal.monster.damage_vulnerabilities }}</oline>
-                                <oline>damage_resistances: {{ monsterModal.monster.damage_resistances }}</oline>
-                                <oline>damage_immunities: {{ monsterModal.monster.damage_immunities }}</oline>
-                                <oline>condition_immunities: {{ monsterModal.monster.condition_immunities }}</oline>
-                                <oline>languages: {{ monsterModal.monster.languages }}</oline>
-                                <oline>speed: {{ monsterModal.monster.speed }}</oline>
-                                <oline>perception: {{ monsterModal.monster.perception }}</oline>
-                                <oline>stealth: {{ monsterModal.monster.stealth }}</oline>
-                            </ul>
+                  <div class="modal-background"></div>
+                  <div class="modal-content">
+                    <div class="box">
+                          <div class="content">
+                            {{ monsterModal.monster.name }}
+                            <button @click="removeMonster(monsterModal.monster)">Remove</button>
+                            <div class="columns">
+                                <ul class="column">
+                                    <li>str: {{ monsterModal.monster.strength }} ({{ abilityScoreModifier(monsterModal.monster.strength) }})</li>
+                                    <li>dex: {{ monsterModal.monster.dexterity }} ({{ abilityScoreModifier(monsterModal.monster.dexterity) }})</li>
+                                    <li>con: {{ monsterModal.monster.constitution }} ({{ abilityScoreModifier(monsterModal.monster.constitution) }})</li>
+                                    <li>int: {{ monsterModal.monster.intelligence }} ({{ abilityScoreModifier(monsterModal.monster.intelligence) }})</li>
+                                    <li>wis: {{ monsterModal.monster.wisdom }} ({{ abilityScoreModifier(monsterModal.monster.wisdom) }})</li>
+                                    <li>cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})</li>
+                                    <li>
+                                        cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})
+                                    </li>
+                                </ul>
+                                <ul class="column">
+                                    <oline>damage_vulnerabilities: {{ monsterModal.monster.damage_vulnerabilities }}</oline>
+                                    <oline>damage_resistances: {{ monsterModal.monster.damage_resistances }}</oline>
+                                    <oline>damage_immunities: {{ monsterModal.monster.damage_immunities }}</oline>
+                                    <oline>condition_immunities: {{ monsterModal.monster.condition_immunities }}</oline>
+                                    <oline>languages: {{ monsterModal.monster.languages }}</oline>
+                                    <oline>speed: {{ monsterModal.monster.speed }}</oline>
+                                    <oline>perception: {{ monsterModal.monster.perception }}</oline>
+                                    <oline>stealth: {{ monsterModal.monster.stealth }}</oline>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-              </div>
-              <button class="modal-close is-large" @click="closeMonsterModal" aria-label="close"></button>
-            </div>
-
-            <nav class="level">
-              <div class="level-left">
-                <div class="level-item">
-                  <div class="field has-addons">
-                    <p class="control">
-                        <a class="button" @click="sideBarToggle">+</a>
-                    </p>
-                    <p class="control">
-                      <input v-model="name" class="input" type="text">
-                    </p>
-                    <p class="control">
-                        <a class="button" @click="saveEncounter">Save</a>
-                    </p>
-                    <p class="control">
-                        <a class="button is-danger" @click="removeEncounter">Remove encounter</a>
-                    </p>
-                    <p class="control">
-                        <a class="button" @click="clearEncounter">
-                            Clear encounter
-                        </a>
-                    </p>
-                    <p class="control">
-                        <a class="button" @click="pasteToEncounter">
-                            Paste
-                        </a>
-                    </p>
-                    <p class="control">
-                        <a class="button" :href="generateFile()" :download="name + '.json'">
-                            Download encounter
-                        </a>
-                    </p>
-
-                    <div class="file">
-                      <label class="file-label">
-                        <input @change="importFile" class="file-input" type="file">
-                        <span class="file-cta">
-                          <span class="file-icon">
-                            <i class="fas fa-upload"></i>
-                          </span>
-                          <span class="file-label">
-                            Upload encounter
-                          </span>
-                        </span>
-                      </label>
-                    </div>
-
                   </div>
+                  <button class="modal-close is-large" @click="closeMonsterModal" aria-label="close"></button>
                 </div>
-              </div>
+            <nav class="level">
+                  <div class="level-left">
+                    <div class="level-item">
+                      <div class="field has-addons">
+                        <p class="control">
+                            <a class="button" @click="sideBarToggle">+</a>
+                        </p>
+                        <p class="control">
+                          <input v-model="name" class="input" type="text">
+                        </p>
+                        <p class="control">
+                            <a class="button" @click="saveEncounter">Save</a>
+                        </p>
+                        <p class="control">
+                            <a class="button is-danger" @click="removeEncounter">Remove encounter</a>
+                        </p>
+                        <p class="control">
+                            <a class="button" @click="clearEncounter">
+                                Clear encounter
+                            </a>
+                        </p>
+                        <p class="control">
+                            <a class="button" @click="pasteToEncounter">
+                                Paste
+                            </a>
+                        </p>
+                        <p class="control">
+                            <a class="button" :href="generateFile()" :download="name + '.json'">
+                                Download encounter
+                            </a>
+                        </p>
+
+                        <div class="file">
+                          <label class="file-label">
+                            <input @change="importFile" class="file-input" type="file">
+                            <span class="file-cta">
+                              <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                              </span>
+                              <span class="file-label">
+                                Upload encounter
+                              </span>
+                            </span>
+                          </label>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
             </nav>
-            
-            <div>
+                
+            <header>
                 <h4>Settings</h4>
                 <span v-for="(setting, key) in settings">
                     {{ key }}: <input v-model="settings[key]" class="input" type="text">
                 </span>
-            </div>
-
-            <div class="columns">
-              <div class="column" v-if="isSidebarActive">
-                <monstersTable></monstersTable>
-              </div>
-
-              <div :class="sideBarClass">
-                    <table class="table is-bordered">
+            </header>
+            <main>
+                <aside>
+                    <monstersTable v-if="isSidebarActive"></monstersTable>
+                    <h2 class="is-size-5">Saved Encounters</h2>
+                    <div v-for="encoun in savedEncounters">
+                        <a @click="loadEncounter(encoun)">{{ encoun }}</a>
+                    </div>
+                    <router-link v-if="name" :to="'/map?name=' + name">Map</router-link>
+                </aside>
+                <table class="table is-bordered">
                         <thead>
                             <tr>
                                 <th></th>
@@ -205,14 +205,8 @@ const template = `
                             </tr>
                         </tbody>
                     </table>
-              </div>
-            </div>
-
-            <h2 class="is-size-5">Saved Encounters</h2>
-            <div v-for="encoun in savedEncounters">
-                <a @click="loadEncounter(encoun)">{{ encoun }}</a>
-            </div>
-        </main>
+            </main>
+        </div>
     `;
 
 const encounter = {
@@ -262,8 +256,9 @@ const encounter = {
         }
     },
     mounted() {
-        // TODO: remove
-        // this.loadEncounter('Sample');
+        if (this.name || this.$route.query.name) {
+            this.loadEncounter(this.$route.query.name || this.name);
+        }
     },
     methods: {
         abilityScoreModifier,

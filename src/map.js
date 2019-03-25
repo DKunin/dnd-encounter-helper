@@ -1,11 +1,16 @@
 const template = `
-        <div>
-            <div id="container"></div>
-            <h2 class="is-size-5">Saved Encounters</h2>
-            <div v-for="encoun in savedEncounters">
-                <a @click="loadEncounter(encoun.name)">{{ encoun.name }}</a>
-            </div>
-        </div>
+        <main>
+            <section id="container"></section>
+            <aside>
+                <h2 class="is-size-5">Saved Encounters</h2>
+                <div v-for="encoun in savedEncounters">
+                    <a @click="loadEncounter(encoun.name)">{{ encoun.name }}</a>
+                </div>
+                <section>
+                    <router-link :to="'/encounter?name=' + name">Encounter</router-link>
+                </section>
+            </aside>
+        </main>
     `;
 
 function createMonster(monster, store) {
@@ -28,9 +33,12 @@ function createMonster(monster, store) {
     var shape = new Konva.Circle({
         width: size,
         height: size,
-        fill: monster.isPartyMember ? 'green' : 'red',
+        stroke: 'black',
+        strokeWidth: 2,
+        fill: monster.isPartyMember ? '#27ae60' : '#e74c3c',
         name: 'fillShape'
     });
+
     var boundingBox = shape.getClientRect({ relativeTo: group });
 
     var controlVisibility = new Konva.Circle({
@@ -42,15 +50,50 @@ function createMonster(monster, store) {
         name: 'changeVisibility'
     });
 
+
+    var decreaseHealth = new Konva.Circle({
+        x: boundingBox.x,
+        y: boundingBox.y + 40,
+        width: 15,
+        height: 15,
+        fill: 'gray',
+        name: 'decreaseHealth'
+    });
+
+    var increaseHealth = new Konva.Circle({
+        x: boundingBox.x + 30,
+        y: boundingBox.y + 40,
+        width: 15,
+        height: 15,
+        fill: 'green',
+        name: 'increaseHealth'
+    });
+
     controlVisibility.on('click', function() {
         store.commit('toggleMonsterVisibility', {
             id: monster.id
         });
     });
 
+    decreaseHealth.on('click', function() {
+        store.commit('changeMonsterHealth', {
+            id: monster.id,
+            hp: monster.hit_points--
+        });
+    });
+
+    increaseHealth.on('click', function() {
+        store.commit('changeMonsterHealth', {
+            id: monster.id,
+            hp: monster.hit_points++
+        });
+    });
+
     var nameAvatar = new Konva.Text({
-        x: boundingBox.x + 8,
-        y: boundingBox.y + 10,
+        x: -4,
+        y: -4,
+        width: 15,
+        height: 15,
         fill: 'white',
         text: monster.name.split(' ').reduce((newLine, word) => {
             return (newLine += word.slice(0, 1));
@@ -60,9 +103,8 @@ function createMonster(monster, store) {
     var mainText = new Konva.Text({
         x: boundingBox.x + 40,
         y: boundingBox.y,
-        stroke: 'white',
-        strokeWidth: 0.6,
-        strokeScaleEnabled: true,
+        stroke: 'black',
+        strokeWidth: 0.3,
         text:
             `${monster.sortOrder} ${monster.name}\n` +
             `ac:${monster.armor_class} / hp: ${monster.hit_points}\n` +
@@ -85,6 +127,8 @@ function createMonster(monster, store) {
     group.add(nameAvatar);
     if (!monster.isPartyMember) {
         group.add(controlVisibility);
+        group.add(increaseHealth);
+        group.add(decreaseHealth);
     }
 
     return group;
@@ -162,8 +206,8 @@ const party = {
 
             layer.on('click', function(e) {
                 var target = e.target;
-
-                if (target.name() === 'changeVisibility') {
+                console.log(target.name());
+                if (['increaseHealth', 'decreaseHealth', 'changeVisibility'].includes(target.name())) {
                     layer.removeChildren();
                     drawMonsters(layer, encMonsters, store);
                     layer.draw();
