@@ -335,37 +335,36 @@ const store = new Vuex.Store({
 
 const template = `
     <section>
-        <div class="container main-container">
-            <div class="tabs">
-                <ul>
-                    <li>
-                        <router-link to="/monsters">Monsters</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/spells">Spells</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/weapons">Weapons</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/encounter">Encounters</span></router-link>
-                    </li>
-                    <li>
-                        <router-link to="/party">Party</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/misc">Misc</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/map">Map</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/names">Names</router-link>
-                    </li>
-                </ul>
-            </div>
-            <router-view />
-        </div>
+        <nav class="tabs">
+            <ul>
+                <li>
+                    <router-link to="/monsters">Monsters</router-link>
+                </li>
+                <li>
+                    <router-link to="/spells">Spells</router-link>
+                </li>
+                <li>
+                    <router-link to="/weapons">Weapons</router-link>
+                </li>
+                <li>
+                    <router-link to="/encounter">Encounters</span></router-link>
+                </li>
+                <li>
+                    <router-link to="/party">Party</router-link>
+                </li>
+                <li>
+                    <router-link to="/misc">Misc</router-link>
+                </li>
+                <li>
+                    <router-link to="/map">Map</router-link>
+                </li>
+                <li>
+                    <router-link to="/names">Names</router-link>
+                </li>
+            </ul>
+        </nav>
+        <router-view />
+        
     </section>
 `;
 

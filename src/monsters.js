@@ -1,28 +1,14 @@
 const template = `
-        <div>
-            <nav class="level">
-              <div class="level-left">
-                <div class="level-item">
-                  <p class="subtitle is-5">
-                    <strong>{{ monsters.length }}</strong> monsters
-                  </p>
-                </div>
-                <div class="level-item">
-                  <div class="field has-addons">
-                    <p class="control">
-                      <input v-model="filter" class="input" type="text">
-                    </p>
-                    <a v-if="false" class="button" @click="search">search</a>
-                  </div>
-                </div>
-              </div>
-            </nav>
-            <article class="media" v-for="monster in monsters">
-              <figure class="media-left">
-                <p class="image is-64x64">
-                  {{ monster.challenge_rating }}
-                </p>
-              </figure>
+        <section>
+            <header>
+              <strong>{{ monsters.length }}</strong> monsters
+              <input v-model="filter" class="input" type="text">
+            </header>
+
+            <article v-for="monster in monsters">
+              <p class="image is-64x64">
+                {{ monster.challenge_rating }}
+              </p>
               <div class="media-content">
                 <div class="content">
                     <p>
@@ -41,7 +27,7 @@ const template = `
                 </a>
               </div>
             </article>
-        </div>
+        </section>
     `;
 
 const monsters = {
