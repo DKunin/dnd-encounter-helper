@@ -834,6 +834,92 @@ const template = `
                     </tr>
                 </tbody>
             </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td>Dice</td>
+                        <td>What the monsters are doing</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>At Play</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Being Eaten</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Burrowing</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Decoy/Construct</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Deceased</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Disoriented/Mourning</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Displaying/Signaling/Call</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Feeding</td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Fighting</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Fleeing/Pursuing</td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>Mating</td>
+                    </tr>
+                    <tr>
+                        <td>13</td>
+                        <td>Migrating</td>
+                    </tr>
+                    <tr>
+                        <td>14</td>
+                        <td>Mutated/Conjoined/albino</td>
+                    </tr>
+                    <tr>
+                        <td>15</td>
+                        <td>Grooming/Shreding</td>
+                    </tr>
+                    <tr>
+                        <td>16</td>
+                        <td>Trained</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>Trapped/Caged</td>
+                    </tr>
+                    <tr>
+                        <td>18</td>
+                        <td>With Young</td>
+                    </tr>
+                    <tr>
+                        <td>19</td>
+                        <td>Wounded/Blinded/Lame</td>
+                    </tr>
+                    <tr>
+                        <td>20</td>
+                        <td>Undead</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     `;
