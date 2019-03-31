@@ -4,67 +4,23 @@
     <meta charset="UTF-8">
     <title>DND encounter helper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./vendor/bulma.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:700' rel='stylesheet' type='text/css'/><link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'/>
     <script defer src="./vendor/all.js"></script>
     <!-- Reference for pages https://app.roll20.net/compendium/dnd5e/Spells%20List?Classes%5B%5D=Sorcerer#content -->
     <style>
-        .main-container, html, body, body > main, body > div {
-            min-height: 100%;
-            height: 100%;
-            font-family: Georgia, serif;
-        }
+       
 
-        .encounter-monsters {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .encounter-monsters > .tile {
-            padding: 10px;
-        }
-        .monster-card-additional-info {
-            font-size: .8em;
-        }
-        .router-link-active {
-            font-weight: bold;
-        }
-        summary:focus, details:focus {
-            outline: none;
-        }
-        .footer {
-            padding: 3rem 1.5rem;
-        }
-        .tabs + .section {
-            padding-top: 0;
-        }
-        .inline-input {
-            padding: 4px;
-            font-size: 15px;
-            font-family: Georgia, serif;
-            border: none;
-            border-bottom: 1px solid #c2c2c2;
-            width: 100%;
-        }
-        .inline-input.short {
-            max-width: 60px;
-        }
-        .inline-input:active, .inline-input:focus {
-            outline: none;
-        }
-        .table {
-            width: 100%;
-        }
-        .monster-dead {
-            opacity: .4;
-        }
-        .select.is-multiple select {
-            min-height: 500px;
-        }
-
-        main {
-            /*min-height: 100%;
-            margin-bottom: -120px;*/
-            display: flex;
-            justify-content: space-between;
+        .monster-stat-block > h1 {
+              font-family: 'Lora', 'Calisto MT', 'Bookman Old Style', Bookman,
+                            'Goudy Old Style', Garamond, 'Hoefler Text',
+                            'Bitstream Charter', Georgia, serif;
+              color: #7A200D;
+              font-weight: 700;
+              margin-top: -6px;
+              margin-bottom: -2px;
+              font-size: 25px;
+              letter-spacing: 2px;
+              font-variant: small-caps;
         }
     </style>
 </head>

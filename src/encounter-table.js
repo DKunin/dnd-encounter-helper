@@ -2,67 +2,6 @@ import abilityScoreModifier from './abilityScoreModifier.js';
 
 const template = `
         <div>
-            <div :class="{ 'modal': true, 'is-active': openedAdditionalModal.modalState }">
-              <div class="modal-background"></div>
-              <div class="modal-content">
-                <div class="box">
-                  <article class="media">
-                    <div class="media-content">
-                      <div class="content">
-                        <div class="select is-multiple">
-                            <select multiple size="4" v-model="additionalWeapon">
-                                <option v-for="weapon in weapons" :value="weapon" >{{ weapon.name }}</option>
-                            </select>
-                        </div>
-                        <div class="select is-multiple">
-                            <select multiple size="4" v-model="additionalSpell">
-                                <option v-for="spell in spells" :value="spell" >{{ spell.name }}</option>
-                            </select>
-                        </div>
-                        <a class="button" @click="additionalStuffForMonster(additionalWeapon, additionalSpell)">Save</a>
-                      </div>
-                    </div>
-                  </article>
-                </div>
-              </div>
-              <button class="modal-close is-large" @click="closeModal" aria-label="close"></button>
-            </div>
-
-            <div :class="{ 'modal': true, 'is-active': monsterModal.modalState }">
-                  <div class="modal-background"></div>
-                  <div class="modal-content">
-                    <div class="box">
-                          <div class="content">
-                            {{ monsterModal.monster.name }}
-                            <button @click="removeMonster(monsterModal.monster)">Remove</button>
-                            <div class="columns">
-                                <ul class="column">
-                                    <li>str: {{ monsterModal.monster.strength }} ({{ abilityScoreModifier(monsterModal.monster.strength) }})</li>
-                                    <li>dex: {{ monsterModal.monster.dexterity }} ({{ abilityScoreModifier(monsterModal.monster.dexterity) }})</li>
-                                    <li>con: {{ monsterModal.monster.constitution }} ({{ abilityScoreModifier(monsterModal.monster.constitution) }})</li>
-                                    <li>int: {{ monsterModal.monster.intelligence }} ({{ abilityScoreModifier(monsterModal.monster.intelligence) }})</li>
-                                    <li>wis: {{ monsterModal.monster.wisdom }} ({{ abilityScoreModifier(monsterModal.monster.wisdom) }})</li>
-                                    <li>cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})</li>
-                                    <li>
-                                        cha: {{ monsterModal.monster.charisma }} ({{ abilityScoreModifier(monsterModal.monster.charisma) }})
-                                    </li>
-                                </ul>
-                                <ul class="column">
-                                    <oline>damage_vulnerabilities: {{ monsterModal.monster.damage_vulnerabilities }}</oline>
-                                    <oline>damage_resistances: {{ monsterModal.monster.damage_resistances }}</oline>
-                                    <oline>damage_immunities: {{ monsterModal.monster.damage_immunities }}</oline>
-                                    <oline>condition_immunities: {{ monsterModal.monster.condition_immunities }}</oline>
-                                    <oline>languages: {{ monsterModal.monster.languages }}</oline>
-                                    <oline>speed: {{ monsterModal.monster.speed }}</oline>
-                                    <oline>perception: {{ monsterModal.monster.perception }}</oline>
-                                    <oline>stealth: {{ monsterModal.monster.stealth }}</oline>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                  <button class="modal-close is-large" @click="closeMonsterModal" aria-label="close"></button>
-                </div>
             <nav class="level">
                   <div class="level-left">
                     <div class="level-item">
@@ -149,9 +88,10 @@ const template = `
                                         <span @click="monsterMoveDown(monster.id)"><i class="fas fa-sort-down"></i></span>
                                         {{ monster.sortOrder}} {{monster.name}}
                                     </h4>
-                                    <div>
-                                        Init: <input type="number" class="inline-input short" v-model="monster.initiative" />
-                                    </div>
+                                    <label for="">
+                                        Init: 
+                                        <input type="number" class="inline-input short" v-model="monster.initiative" />
+                                    </label>
                                     <div>
                                         AC: <input class="inline-input short" type="number" v-model="monster.armor_class">
                                     </div>
@@ -206,6 +146,23 @@ const template = `
                         </tbody>
                     </table>
             </main>
+            <dialog :open="openedAdditionalModal.modalState">
+            
+                <select multiple size="4" v-model="additionalWeapon">
+                    <option v-for="weapon in weapons" :value="weapon" >{{ weapon.name }}</option>
+                </select>
+                <select multiple size="4" v-model="additionalSpell">
+                    <option v-for="spell in spells" :value="spell" >{{ spell.name }}</option>
+                </select>
+                <button class="button" @click="additionalStuffForMonster(additionalWeapon, additionalSpell)">Save</button>
+                <button @click="closeModal" aria-label="close">x</button>
+            </dialog>
+
+            <dialog :open="monsterModal.modalState">
+                <monster-stat-block :monster="monsterModal.monster" />
+                <button @click="removeMonster(monsterModal.monster)">Remove</button>
+                <button @click="closeMonsterModal" aria-label="close">x</button>
+            </dialog>
         </div>
     `;
 

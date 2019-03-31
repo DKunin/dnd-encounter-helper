@@ -6,26 +6,8 @@ const template = `
             </header>
 
             <article v-for="monster in monsters">
-              <p class="image is-64x64">
-                {{ monster.challenge_rating }}
-              </p>
-              <div class="media-content">
-                <div class="content">
-                    <p>
-                      <strong>{{ monster.name }} </strong> <small>{{ monster.size }}</small> <small>{{ monster.type }}</small>
-                    </p>
-                    <p>
-                      <monster-short-stat :monster="monster" />
-                    </p>
-                </div>
-              </div>
-              <div class="media-right">
-                <a class="button" @click="addMonster(monster)">
-                  <span class="icon is-small">
-                    <i class="fas fa-plus-square"></i>
-                  </span>
-                </a>
-              </div>
+                <monster-stat-block :monster="monster" />
+                <button class="button" @click="addMonster(monster)">+</button>
             </article>
         </section>
     `;
