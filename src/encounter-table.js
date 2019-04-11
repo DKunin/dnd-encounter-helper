@@ -72,8 +72,7 @@ const template = `
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>weapon</th>
-                                <th>traits</th>
+                                <th>action</th>
                                 <th>rating: {{ encounterRating }} / exp: {{ encounterExperience }}</th>
                             </tr>
                         </thead>
@@ -116,17 +115,17 @@ const template = `
                                         </a>
                                     </li>
                                     <li v-for="additionalSpell in monster.additionalSpell">
-                                        <router-link :title="additionalSpell.text" :to="'spells?query='+ additionalSpell.name">{{ additionalSpell.name }}</router-link>
+                                        <router-link target="_blank" :title="additionalSpell.text" :to="'spells?query='+ additionalSpell.name">{{ additionalSpell.name }}</router-link>
                                         <a @click="removeAttribute(monster.id, additionalSpell.name, 'Spell')">
                                             <i class="fas fa-minus-square"></i>
                                         </a>
                                     </li>
-                                </td>
-                                <td>
+                                    <li>
                                     {{ (monster.traits || []).join(', ') }}
-                                    <div>
-                                        <textarea v-model="monster.comment" id="" cols="30" rows="10"></textarea>
-                                    </div>
+                                    </li>
+                                    <li>
+                                        <textarea v-model="monster.comment" id="" cols="30" rows="3"></textarea>
+                                    </li>
                                 </td>
                                 <td>
                                     <a @click="toggleInfo(monster)">info</a>
