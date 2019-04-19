@@ -1,56 +1,20 @@
 import abilityScoreModifier from './abilityScoreModifier.js';
 
 const template = `
-        <div>
+        <section>
             <nav class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <div class="field has-addons">
-                        <p class="control">
-                            <a class="button" @click="sideBarToggle">+</a>
-                        </p>
-                        <p class="control">
-                          <input v-model="name" class="input" type="text">
-                        </p>
-                        <p class="control">
-                            <a class="button" @click="saveEncounter">Save</a>
-                        </p>
-                        <p class="control">
-                            <a class="button is-danger" @click="removeEncounter">Remove encounter</a>
-                        </p>
-                        <p class="control">
-                            <a class="button" @click="clearEncounter">
-                                Clear encounter
-                            </a>
-                        </p>
-                        <p class="control">
-                            <a class="button" @click="pasteToEncounter">
-                                Paste
-                            </a>
-                        </p>
-                        <p class="control">
-                            <a class="button" :href="generateFile()" :download="name + '.json'">
-                                Download encounter
-                            </a>
-                        </p>
+                <a class="button" @click="sideBarToggle">+</a>
 
-                        <div class="file">
-                          <label class="file-label">
-                            <input @change="importFile" class="file-input" type="file">
-                            <span class="file-cta">
-                              <span class="file-icon">
-                                <i class="fas fa-upload"></i>
-                              </span>
-                              <span class="file-label">
-                                Upload encounter
-                              </span>
-                            </span>
-                          </label>
-                        </div>
+                <input v-model="name" class="input" type="text">
 
-                      </div>
-                    </div>
-                  </div>
+                <a class="button" @click="saveEncounter">Save</a>
+                <a class="button" @click="clearEncounter">
+                Clear encounter
+                </a>
+                <a class="button" @click="pasteToEncounter">
+                Paste
+                </a>
+                <a class="button is-danger" @click="removeEncounter">Remove encounter</a>
             </nav>
                 
             <header>
@@ -59,7 +23,7 @@ const template = `
                     {{ key }}: <input v-model="settings[key]" class="input" type="text">
                 </span>
             </header>
-            <main>
+            <section>
                 <aside>
                     <monstersTable v-if="isSidebarActive"></monstersTable>
                     <h2 class="is-size-5">Saved Encounters</h2>
@@ -144,7 +108,7 @@ const template = `
                             </tr>
                         </tbody>
                     </table>
-            </main>
+            </section>
             <dialog :open="openedAdditionalModal.modalState">
             
                 <select multiple size="4" v-model="additionalWeapon">
@@ -162,7 +126,7 @@ const template = `
                 <button @click="removeMonster(monsterModal.monster)">Remove</button>
                 <button @click="closeMonsterModal" aria-label="close">x</button>
             </dialog>
-        </div>
+        </section>
     `;
 
 const encounter = {

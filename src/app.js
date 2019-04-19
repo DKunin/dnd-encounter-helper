@@ -334,38 +334,19 @@ const store = new Vuex.Store({
 });
 
 const template = `
-    <section>
-        <nav class="tabs">
-            <ul>
-                <li>
-                    <router-link to="/monsters">Monsters</router-link>
-                </li>
-                <li>
-                    <router-link to="/spells">Spells</router-link>
-                </li>
-                <li>
-                    <router-link to="/weapons">Weapons</router-link>
-                </li>
-                <li>
-                    <router-link to="/encounter">Encounters</span></router-link>
-                </li>
-                <li>
-                    <router-link to="/party">Party</router-link>
-                </li>
-                <li>
-                    <router-link to="/misc">Misc</router-link>
-                </li>
-                <li>
-                    <router-link to="/map">Map</router-link>
-                </li>
-                <li>
-                    <router-link to="/names">Names</router-link>
-                </li>
-            </ul>
+    <main>
+        <nav>
+            <router-link to="/monsters">Monsters</router-link>
+            <router-link to="/spells">Spells</router-link>
+            <router-link to="/weapons">Weapons</router-link>
+            <router-link to="/encounter">Encounters</span></router-link>
+            <router-link to="/party">Party</router-link>
+            <router-link to="/misc">Misc</router-link>
+            <router-link to="/map">Map</router-link>
+            <router-link to="/names">Names</router-link>
         </nav>
         <router-view />
-        
-    </section>
+    </main>
 `;
 
 const app = {

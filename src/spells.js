@@ -1,69 +1,50 @@
 const template = `
-        <section>
+        <section class="narrow">
             <header>
-                <div class="field is-horizontal">
-                    <div class="field-body">
-                        <div class="field">
-                            <input v-model="filter"  class="input is-small" type="text" placeholder="Search">
-                        </div>
-                        <div class="field">
-                            <select class="select is-small" v-model="level">
-                                <option></option>
-                                <option v-for="casterLevel in casterLevels">
-                                    {{ casterLevel }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <select class="select is-small" v-model="casterClass">
-                                <option></option>
-                                <option v-for="casterClass in casterClasses">
-                                    {{ casterClass }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="field">
-                          <div class="control">
-                            <label class="checkbox">
-                              Showfull
-                              <input type="checkbox" v-model="showFull">
-                            </label>
-                          </div>
-                        </div>
-                    </div>
-                </div>
+                <input v-model="filter"  class="input is-small" type="text" placeholder="Search">
+                <select class="select is-small" v-model="level">
+                    <option></option>
+                    <option v-for="casterLevel in casterLevels">
+                        {{ casterLevel }}
+                    </option>
+                </select>
+                <select class="select is-small" v-model="casterClass">
+                    <option></option>
+                    <option v-for="casterClass in casterClasses">
+                        {{ casterClass }}
+                    </option>
+                </select>
+                <label class="checkbox">
+                  Showfull
+                  <input type="checkbox" v-model="showFull">
+                </label>
+
                 <strong>{{ spells.length }}</strong> spells
             </header>
             <section>
                 <article class="media" v-for="spell in spells">
-                  <figure class="media-left">
-                    <p class="image is-64x64">
-                      Level: {{ spell.level }} <br>
-                      Time: {{ spell.time }} <br>
-                      <div v-if="spell.ritual">Ritual</div>
-                    </p>
-                  </figure>
-                  <div class="media-content">
-                    <div class="content">
-                        <p>
+                    <p>Level: {{ spell.level }}</p>
+                     <p>Time: {{ spell.time }}</p>
+                    <p>
                         <strong>{{ spell.name }} </strong> <small>{{ spell.school }}</small> <small>{{ spell.type }}</small>
-                        </p>
-                        <p>
-                            classes: <small>{{ spell.classes.join(',') }}</small>
-                        </p>
-                        <p>
-                            concentration: <small>{{ spell.duration }}</small>
-                        </p>
-                        <p>
-                            range: <small>{{ spell.range }}</small>
-                        </p>
-                        <p v-if="spell.material">
-                            material: <small>{{ spell.material }}</small>
-                        </p>
-                        <details v-if="!showFull">{{ spell.text }}</details>
-                        <div v-if="showFull">{{ spell.text }}</div>
-                    </div>
-                  </div>
+                    </p>
+                    <p>
+                        classes: <small>{{ spell.classes.join(',') }}</small>
+                    </p>
+                    <p>
+                        concentration: <small>{{ spell.duration }}</small>
+                    </p>
+                    <p>{{ (spell.components || []).join(',') }}</p>
+                    <p>
+                        range: <small>{{ spell.range }}</small>
+                    </p>
+                    <p>Ritual: {{ spell.ritual }}</p>
+                    <p v-if="spell.material">
+                        material: <small>{{ spell.material }}</small>
+                    </p>
+                    <details v-if="!showFull">{{ spell.text }}</details>
+                    <div v-if="showFull">{{ spell.text }}</div>
+                    <hr />
                 </article>
             </section>
         </section>
