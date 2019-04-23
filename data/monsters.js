@@ -19779,15 +19779,15 @@ const monsters = [
         type: 'humanoid',
         subtype: 'any race',
         alignment: 'LG',
-        armor_class: 13,
-        hit_points: 20,
-        hit_dice: '5d8',
+        armor_class: 19,
+        hit_points: 63,
+        hit_dice: '10d10',
         speed: '30 ft.',
-        strength: 14,
+        strength: 16,
         dexterity: 12,
-        constitution: 15,
+        constitution: 16,
         intelligence: 12,
-        wisdom: 10,
+        wisdom: 12,
         charisma: 10,
         medicine: 4,
         religion: 10,
@@ -19795,7 +19795,7 @@ const monsters = [
         damage_resistances: '',
         damage_immunities: '',
         condition_immunities: 'Charmed',
-        senses: 'passive Perception 12',
+        senses: 'passive Perception 14',
         languages: 'Common, Celestial',
         challenge_rating: 1,
         special_abilities: [
@@ -19809,8 +19809,8 @@ const monsters = [
             {
                 name: 'Any bludgeoning weapon',
                 desc:
-                    'Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 1d8 bludgeoning damage.',
-                attack_bonus: 2,
+                    'Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 1d8 bludgeoning damage. WIS saving + 1d8 psychic',
+                attack_bonus: 3,
                 damage_dice: '1d8'
             }
         ]
@@ -19821,8 +19821,8 @@ const monsters = [
         type: 'humanoid',
         subtype: 'any race',
         alignment: 'LG',
-        armor_class: 11,
-        hit_points: 20,
+        armor_class: 14,
+        hit_points: 50,
         hit_dice: '5d8',
         speed: '30 ft.',
         strength: 10,
@@ -19844,7 +19844,7 @@ const monsters = [
             {
                 name: 'Spellcasting',
                 desc:
-                    'The FlameBearer Cleric is a 5st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 12, +4 to hit with spell attacks). The FlameBearer Cleric has following cleric spells prepared:\n\n• Cantrips (at will): light, sacred flame, thaumaturgy\n• 1st level (3 slots): bless, cure wounds, sanctuary, Command, Sleep, 2nd level:Hold Person, Silence, Suggestion, 3d level: Crusader\'s Mantle , 4th level: Grasping Vine, 7th level: Divine Word ',
+                    'The FlameBearer Cleric is a 10st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 14, +4 to hit with spell attacks). The FlameBearer Cleric has following cleric spells prepared:\n\n• Cantrips (at will): light, sacred flame, thaumaturgy\n• 1st level (3 slots): bless, cure wounds, sanctuary, Command, Sleep, 2nd level:Hold Person, Silence, Suggestion, 3d level: Crusader\'s Mantle , 4th level: Grasping Vine, 7th level: Divine Word ',
                 attack_bonus: 0
             }
         ],
