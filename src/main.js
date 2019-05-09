@@ -11,5 +11,6 @@ Vue.component('monsterCardStat', monsterCardStat);
 Vue.component('monstersTable', monsters);
 Vue.component('monsterStatBlock', monsterStatBlock);
 Vue.component('oline', oline);
+Vue.component('virtualList', VirtualList);
 
 new Vue(app);

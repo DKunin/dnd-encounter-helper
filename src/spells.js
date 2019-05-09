@@ -22,30 +22,32 @@ const template = `
                 <strong>{{ spells.length }}</strong> spells
             </header>
             <section>
-                <article class="media" v-for="spell in spells">
-                    <p>Level: {{ spell.level }}</p>
-                     <p>Time: {{ spell.time }}</p>
-                    <p>
-                        <strong>{{ spell.name }} </strong> <small>{{ spell.school }}</small> <small>{{ spell.type }}</small>
-                    </p>
-                    <p>
-                        classes: <small>{{ spell.classes.join(',') }}</small>
-                    </p>
-                    <p>
-                        concentration: <small>{{ spell.duration }}</small>
-                    </p>
-                    <p>{{ (spell.components || []).join(',') }}</p>
-                    <p>
-                        range: <small>{{ spell.range }}</small>
-                    </p>
-                    <p>Ritual: {{ spell.ritual }}</p>
-                    <p v-if="spell.material">
-                        material: <small>{{ spell.material }}</small>
-                    </p>
-                    <details v-if="!showFull">{{ spell.text }}</details>
-                    <div v-if="showFull">{{ spell.text }}</div>
-                    <hr />
-                </article>
+                <virtual-list :size="70" :remain="40">
+                    <article class="media" v-for="spell in spells" :key="spell.name">
+                        <p>
+                            <strong>{{ spell.name }} </strong> <small>{{ spell.school }}</small> <small>{{ spell.type }}</small>
+                        </p>
+                        <p>Level: {{ spell.level }}</p>
+                        <p>Time: {{ spell.time }}</p>
+                        <p>
+                            classes: <small>{{ spell.classes.join(',') }}</small>
+                        </p>
+                        <p>
+                            concentration: <small>{{ spell.duration }}</small>
+                        </p>
+                        <p>{{ (spell.components || []).join(',') }}</p>
+                        <p>
+                            range: <small>{{ spell.range }}</small>
+                        </p>
+                        <p>Ritual: {{ spell.ritual }}</p>
+                        <p v-if="spell.material">
+                            material: <small>{{ spell.material }}</small>
+                        </p>
+                        <details v-if="!showFull">{{ spell.text }}</details>
+                        <div v-if="showFull">{{ spell.text }}</div>
+                        <hr />
+                    </article>
+                </virtual-list>
             </section>
         </section>
     `;

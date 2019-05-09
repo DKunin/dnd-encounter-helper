@@ -1,14 +1,15 @@
 const template = `
-        <section>
+        <section class="narrow">
             <header>
               <strong>{{ monsters.length }}</strong> monsters
               <input v-model="filter" class="input" type="text">
             </header>
-
-            <article v-for="monster in monsters">
-                <monster-stat-block :monster="monster" />
-                <button class="button" @click="addMonster(monster)">+</button>
-            </article>
+            <virtual-list :size="70" :remain="40">
+                <article v-for="monster in monsters" :key="monster.name" >
+                    <monster-stat-block :monster="monster" />
+                    <button class="button" @click="addMonster(monster)">+</button>
+                </article>
+            </virtual-list>
         </section>
     `;
 
@@ -23,7 +24,7 @@ const monsters = {
         monsters() {
             const filter = this.filter;
             if (!filter || filter.length < 3) {
-                return this.$store.state.monstersData.slice(0, 10);
+                return this.$store.state.monstersData;//.slice(0, 10);
             }
             return this.$store.state.monstersData.filter(singleMonster => {
                 return (

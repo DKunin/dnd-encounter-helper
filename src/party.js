@@ -4,8 +4,8 @@ const template = `
             <ul>
                 <li v-for="member in party">
                     <a @click="editMember(member)">{{ member.name }}</a> 
-                    <a @click="addPartyMemberToEncounter(member)">add to encounter</a>
-                    <a @click="removeMember(member.partyMemberId)">remove</a>
+                    <button @click="addPartyMemberToEncounter(member)">add to encounter</button>
+                    <button @click="removeMember(member.partyMemberId)">remove</button>
                 </li>
             </ul>
 

@@ -1,5 +1,5 @@
 const template = `
-        <article class="monster-stat-block">
+        <div class="monster-stat-block">
             <h3><strong>{{ monster.name }} </strong></h3>
             <h4>{{ monster.size }} {{ monster.type }}, {{ monster.alignment }}</h4>
             
@@ -66,7 +66,7 @@ const template = `
                     </li>
                 </ul>
             </div>
-        </article>
+        </div>
     `;
 
 import abilityScoreModifier from './abilityScoreModifier.js';
