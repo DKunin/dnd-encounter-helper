@@ -105,6 +105,10 @@ const store = new Vuex.Store({
             },
             monsters: {}
         },
+        globalDialog: {
+            open: false,
+            content: null
+        },
         tempClipboard: {},
         savedEncounters:
             JSON.parse(localStorage.getItem('savedEncounter')) || {}
@@ -329,12 +333,20 @@ const store = new Vuex.Store({
         },
         nameGenerated(state, newValue) {
             state.generatedLog = state.generatedLog.concat([newValue]);
+        },
+        toggleGlobalDialog(state, dialogState) {
+            state.globalDialog.open = dialogState.open;
+            state.globalDialog.content = dialogState.content;
+            document.body.style.overflow = dialogState.open ? 'hidden' : 'visible';
         }
     }
 });
 
 const template = `
     <main>
+        <dialogComponent :opened="globalDialog.open" :onClose="onClose"  >
+            <div v-html="globalDialog.content"></div>
+        </dialogComponent>
         <nav>
             <router-link to="/monsters">Monsters</router-link>
             <router-link to="/spells">Spells</router-link>
@@ -357,6 +369,16 @@ const app = {
     name: 'app',
     data() {
         return {};
+    },
+    computed: {
+        globalDialog() {
+            return this.$store.state.globalDialog;
+        }
+    },
+    methods: {
+        onClose() {
+            this.$store.commit('toggleGlobalDialog', { open: false, content: null });
+        }
     },
     mounted() {
         fetch('/json?path=savedEncounters')

@@ -19844,7 +19844,7 @@ const monsters = [
             {
                 name: 'Spellcasting',
                 desc:
-                    'The FlameBearer Cleric is a 10st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 14, +4 to hit with spell attacks). The FlameBearer Cleric has following cleric spells prepared:\n\n• Cantrips (at will): light, sacred flame, thaumaturgy\n• 1st level (3 slots): bless, cure wounds, sanctuary, Command, Sleep, 2nd level:Hold Person, Silence, Suggestion, 3d level: Crusader\'s Mantle , 4th level: Grasping Vine, 7th level: Divine Word ',
+                    'The FlameBearer Cleric is a 10st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 14, +4 to hit with spell attacks). The FlameBearer Cleric has following cleric spells prepared:\n\n0ed(-1): light, sacred flame, thaumaturgy|1st(4): bless, cure wounds, sanctuary, Command, Sleep|2nd(3): Hold Person, Silence, Suggestion|3d(3): Crusader\'s Mantle|4th(2): Grasping Vine|7th(1): Divine Word',
                 attack_bonus: 0
             }
         ],

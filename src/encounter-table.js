@@ -1,7 +1,7 @@
 import abilityScoreModifier from './abilityScoreModifier.js';
 
 const template = `
-        <section>
+        <section class="narrow">
             <nav class="level">
                 <a class="button" @click="sideBarToggle">+</a>
 
@@ -22,21 +22,25 @@ const template = `
                 <span v-for="(setting, key) in settings">
                     {{ key }}: <input v-model="settings[key]" class="input" type="text">
                 </span>
-            </header>
-            <section>
-                <aside>
-                    <monstersTable v-if="isSidebarActive"></monstersTable>
-                    <h2 class="is-size-5">Saved Encounters</h2>
+                <details><summary>Saved Encounters</summary>
                     <div v-for="encoun in savedEncounters">
                         <a @click="loadEncounter(encoun)">{{ encoun }}</a>
                     </div>
                     <router-link v-if="name" :to="'/map?name=' + name">Map</router-link>
+                </details>
+            </header>
+            <section>
+                <aside>
+                    <monstersTable v-if="isSidebarActive"></monstersTable>
+                    
+                    
                 </aside>
                 <table class="table is-bordered">
                         <thead>
                             <tr>
                                 <th></th>
                                 <th>action</th>
+                                <th>comment</th>
                                 <th>rating: {{ encounterRating }} / exp: {{ encounterExperience }}</th>
                             </tr>
                         </thead>
@@ -51,25 +55,31 @@ const template = `
                                         <span @click="monsterMoveDown(monster.id)"><i class="fas fa-sort-down"></i></span>
                                         {{ monster.sortOrder}} {{monster.name}}
                                     </h4>
-                                    <label for="">
-                                        Init: 
-                                        <input type="number" class="inline-input short" v-model="monster.initiative" />
-                                    </label>
-                                    <div>
-                                        AC: <input class="inline-input short" type="number" v-model="monster.armor_class">
-                                    </div>
-                                    <div>
-                                        <div @dblclick="generateHitPoints(monster)">HP:</div> <input class="inline-input short" type="number" v-model="monster.hit_points">
-                                    </div>
-                                    Name: <input class="inline-input short" v-model="monster.name">
+                                    <input placeholder="name" v-model="monster.name"><br>
+                                    <span>ac:</span><input placeholder="ac"type="number" v-model="monster.armor_class"><br>
+                                    <span @dblclick="generateHitPoints(monster)">hp:</span><input placeholder="hp" type="number" v-model="monster.hit_points"><br>
+                                    <span>ini:</span><input type="number" placeholder="init" v-model="monster.initiative" /><br>
                                 </td>
       
                                 <td>
                                     <li v-for="action in monster.actions" :title="action.desc">
-                                        {{ action.name }},
-                                        hit: +{{ action.attack_bonus}}
+                                        {{ action.name }}
+                                        <span v-if="action.attack_bonus">, hit: {{ action.attack_bonus }}
                                         <span v-if="action.damage_dice">, dmg: {{ action.damage_dice }}
                                         <span v-if="action.damage_bonus">+{{ action.damage_bonus }}</span></span>
+                                    </li>
+                                    <li v-for="action in monster.special_abilities" :title="action.desc">
+                                        {{ action.name }},
+                                        hit: +{{ action.attack_bonus}}
+                                        <div v-if="action.name.includes('Spellcasting')">
+                                            <li v-for="spelllevel in stringToSpellObject(action.desc)">
+                                                {{ spelllevel.level }}: ({{ spelllevel.slots }})
+                                                <span v-for="sp in spelllevel.spells">
+                                                    <button @click="openSpellModal(sp)">{{sp}}</button>
+                                                </span>
+                                                
+                                            </li>
+                                        </div>
                                     </li>
                                     <li v-for="additionalWeapon in monster.additionalWeapon">
                                         <span>{{ additionalWeapon.name }}</span> <span>{{ additionalWeapon.damage }} {{ abilityScoreModifier(monster.strength) }}</span>
@@ -84,12 +94,10 @@ const template = `
                                             <i class="fas fa-minus-square"></i>
                                         </a>
                                     </li>
-                                    <li>
-                                    {{ (monster.traits || []).join(', ') }}
-                                    </li>
-                                    <li>
-                                        <textarea v-model="monster.comment" id="" cols="30" rows="3"></textarea>
-                                    </li>
+                                </td>
+                                <td>
+                                    {{ (monster.traits || []).join(', ') }} <br>
+                                    <textarea v-model="monster.comment" id="" cols="30" rows="3"></textarea>
                                 </td>
                                 <td>
                                     <a @click="toggleInfo(monster)">info</a>
@@ -315,6 +323,53 @@ const encounter = {
                 monsterId: monsterKey,
                 direction: 'down'
             });
+        },
+        stringToSpellObject(string) {
+            if(!string) return null;
+
+            return string
+                .split('spells prepared:')[1]
+                .split('|')
+                .filter(Boolean)
+                .map(singleLine => {
+                    const level = singleLine.match(/\d(st|nd|d|th|ed)/g)[0];
+                    const slots = singleLine
+                        .match(/\(-?\d\)/g)[0]
+                        .replace(/\(/g, '')
+                        .replace(/\)/g, '');
+                    const spells = singleLine
+                        .replace(/\d(st|nd|d|th|ed)\(-?\d\):\s?/g, '')
+                        .toLowerCase()
+                        .split(',')
+                        .map(singleSpellLine => {
+                            return singleSpellLine.trim();
+                        });
+                    return {
+                        level,
+                        slots,
+                        spells
+                    };
+                });
+        },
+        openSpellModal(spell) {
+            const spellData = this.$store.state.spellsData.find(singleSpell => {
+                console.log(singleSpell.name.toLowerCase(), spell.toLowerCase())
+                return singleSpell.name.toLowerCase().includes(spell.toLowerCase());
+            });
+            console.log(spellData);
+            this.$store.commit('toggleGlobalDialog', { open: true, content: `
+                    <h2>${ spellData.name }</h2>
+                    <p>${ spellData.time }</p>
+                    <p>${ spellData.range }</p>
+                    <p>${ (spellData.components || []).join(',') }</p>
+                    <p>${ spellData.text }</p>
+                    <p>${ (spellData.classes || []).join(',') }</p>
+                    <p>${ spellData.duration }</p>
+                    <p>${ spellData.level }</p>
+                    <p>Ritual: ${ spellData.ritual }</p>
+                    <p>Material: ${ spellData.material }</p>
+                    <p v-if="spellData.ritual">Ritual</p>
+                    <p>${ spellData.school }</p>` });
         }
     },
     data() {
