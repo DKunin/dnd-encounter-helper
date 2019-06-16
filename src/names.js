@@ -32,7 +32,8 @@ const namesView = {
             this.traits = [
                 ...chance.pickset(traits.npcTraits, chance.integer({ min: 1, max: 2 })),
                 chance.pickone(traits.mannerisms),
-                chance.pickone(traits.traits)
+                chance.pickone(traits.traits),
+                chance.pickone(traits.race),
             ].map(singleTrait => singleTrait.toLowerCase()).join('/');
 
             this.$store.commit('nameGenerated', `${this.name}: ${this.traits}`);

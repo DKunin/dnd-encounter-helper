@@ -13,6 +13,27 @@ const traits = {
         'apathetic',
         'sailor-mouthed'
     ],
+    race: [
+        'elf',
+        'human',
+        'halfelf',
+        'orc',
+        'halforc',
+        'tabaxi',
+        'rabantro',
+        'dwarf',
+        'gnome',
+        'halfling',
+        'tiefling',
+        'grayling',
+        'drow',
+        'dauregar',
+        'giant'
+    ],
+    class: [
+        'cleric', 'sorcerer', 'wizard', 'warlock', 'bard', 'barbarian', 'fighter', 'paladin'
+    ],
+    occupation: [],
     traits: [
         'bald',
         'birthmark',

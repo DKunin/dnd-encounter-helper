@@ -6,7 +6,7 @@ const template = `
             </header>
             <virtual-list :size="70" :remain="40">
                 <article v-for="monster in monsters" :key="monster.name" >
-                    <monster-stat-block :monster="monster" />
+                    <monster-stat-block-v2 :monster="monster" />
                     <button class="button" @click="addMonster(monster)">+</button>
                 </article>
             </virtual-list>
