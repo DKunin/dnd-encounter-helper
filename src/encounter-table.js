@@ -35,6 +35,7 @@ const template = `
                     
                     
                 </aside>
+                <monster-stat-block-v2 v-for="monster in encounter"  :monster="monster" />
                 <table class="table is-bordered">
                         <thead>
                             <tr>
@@ -325,6 +326,7 @@ const encounter = {
             });
         },
         stringToSpellObject(string) {
+            return null;
             if(!string) return null;
 
             return string
