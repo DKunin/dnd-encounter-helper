@@ -19783,7 +19783,7 @@ const monsters = [
         hit_points: 63,
         hit_dice: '10d10',
         speed: '30 ft.',
-        strength: 16,
+        strength: 18,
         dexterity: 12,
         constitution: 16,
         intelligence: 12,
@@ -19801,13 +19801,13 @@ const monsters = [
         special_abilities: [
             {
                 name: 'KnockerOuter',
-                desc: 'Whenever FlameBearer Fighter manages to hit the head of the oponent, he must succeed DC 8 Saving throw, or become unconsious',
+                desc: 'Whenever FlameBearer Fighter manages to hit the head of the oponent, he must succeed DC 14 Saving throw, or become unconsious',
                 attack_bonus: 0
             }
         ],
         actions: [
             {
-                name: 'Any bludgeoning weapon',
+                name: 'Any bludgeoning weapon, multiattack',
                 desc:
                     'Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 1d8 bludgeoning damage. WIS saving + 1d8 psychic',
                 attack_bonus: 3,
@@ -19842,9 +19842,100 @@ const monsters = [
         challenge_rating: 1,
         special_abilities: [
             {
+                name: 'KnockerOuter',
+                desc: 'Whenever FlameBearer Fighter manages to hit the head of the oponent, he must succeed DC 14 Saving throw, or become unconsious',
+                attack_bonus: 0
+            },
+            {
                 name: 'Spellcasting',
                 desc:
                     'The FlameBearer Cleric is a 10st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 14, +4 to hit with spell attacks). The FlameBearer Cleric has following cleric spells prepared:\n\n0ed(-1): light, sacred flame, thaumaturgy|1st(4): bless, cure wounds, sanctuary, Command, Sleep|2nd(3): Hold Person, Silence, Suggestion|3d(3): Crusader\'s Mantle|4th(2): Grasping Vine|7th(1): Divine Word',
+                attack_bonus: 0
+            }
+        ],
+        actions: [
+            {
+                name: 'Any bludgeoning weapon',
+                desc:
+                    'Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 1d8 bludgeoning damage.',
+                attack_bonus: 2,
+                damage_dice: '1d8'
+            }
+        ]
+    },
+    {
+        name: 'FlameBearer Paladin',
+        size: 'Medium',
+        type: 'humanoid',
+        subtype: 'any race',
+        alignment: 'LG',
+        armor_class: 18,
+        hit_points: 89,
+        hit_dice: '8d10',
+        speed: '30 ft.',
+        strength: 19,
+        dexterity: 19,
+        constitution: 12,
+        intelligence: 13,
+        wisdom: 15,
+        charisma: 14,
+        medicine: 4,
+        religion: 10,
+        damage_vulnerabilities: '',
+        damage_resistances: 'Cold',
+        damage_immunities: 'Poison',
+        condition_immunities: 'Charmed',
+        senses: 'passive Perception 12',
+        languages: 'Common, Celestial',
+        challenge_rating: 1,
+        special_abilities: [
+            {
+                name: 'Spellcasting',
+                desc:
+                    'The FlameBearer Cleric is a 10st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 14, +4 to hit with spell attacks).Cantrip: Divine Sense, Lay on Hands First: 4 Bless, Command, Compelled Duel, Detect Evil and Good, Divine Favor(bonus), Shield of Faith, Thunderous Smite Second: 3 Aid, Hold Person, Zone of Truth',
+                attack_bonus: 0
+            }
+        ],
+        actions: [
+            {
+                name: 'Any bludgeoning weapon',
+                desc:
+                    'Melee Weapon Attack: +2 to hit, reach 5 ft., one target. Hit: 1d8 bludgeoning damage.',
+                attack_bonus: 2,
+                damage_dice: '1d8'
+            }
+        ]
+    },
+    {
+        name: 'FlameBearer Sorcerer',
+        size: 'Medium',
+        type: 'humanoid',
+        subtype: 'any race',
+        alignment: 'LG',
+        armor_class: 14,
+        hit_points: 89,
+        hit_dice: '8d10',
+        speed: '30 ft.',
+        strength: 16,
+        dexterity: 16,
+        constitution: 16,
+        intelligence: 18,
+        wisdom: 15,
+        charisma: 14,
+        medicine: 4,
+        religion: 10,
+        damage_vulnerabilities: '',
+        damage_resistances: 'Cold',
+        damage_immunities: 'Poison',
+        condition_immunities: 'Charmed',
+        senses: 'passive Perception 14',
+        languages: 'Common, Celestial',
+        challenge_rating: 1,
+        special_abilities: [
+            {
+                name: 'Spellcasting',
+                desc:
+                    'The FlameBearer Cleric is a 10st-level spellcaster. Its spellcasting ability is Wisdom (spell save DC 14, +4 to hit with spell attacks).1st 6 Color Spray, Shield, Sleep 2nd 6 Blur, Crown of Madness, Hold Person, Misty Step, See Invisibility 3rd 5 Daylight, Dispel Magic, Slow 4th 3 Banishment, Confusion',
                 attack_bonus: 0
             }
         ],
